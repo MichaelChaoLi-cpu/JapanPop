@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """
+Convert mutliclasses into Single Class
+
+Resolution: 0.008
+
 Created on Mon Apr 11 16:42:38 2022
 
 @author: li.chao.987@s.kyushu-u.ac.jp
