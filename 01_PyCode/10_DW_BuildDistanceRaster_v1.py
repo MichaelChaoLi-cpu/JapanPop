@@ -85,7 +85,9 @@ for type_num in range(16):
     
     dist = ckdnearest(coords_distance_raster, coords_extration_aim, "dist_class_"+str(type_num))
     dist_column = dist[["dist_class_"+str(type_num)]]
+    coords_distance_raster_result["binary_class_"+str(type_num)] = valueArray / 100
     coords_distance_raster_result["dist_class_"+str(type_num)] = dist_column
+    print("dist_class_"+str(type_num))
 
 
 
