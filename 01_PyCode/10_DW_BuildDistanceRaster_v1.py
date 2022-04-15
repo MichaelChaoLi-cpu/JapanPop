@@ -57,9 +57,10 @@ def ckdnearest(gdA, gdB, column_name):
 
     return gdf
   
-coords_extration = addCoord(nx,xmin,xsize,ny,ymin,ysize, epsg)
-coords_distance_raster = coords_extration.copy()
-coords_distance_raster_result = coords_distance_raster.copy()
+coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/mesh_center_point.shp")
+coords_distance_raster_result = coords_extration.copy()
+coords_distance_raster = addCoord(nx,xmin,xsize,ny,ymin,ysize, epsg)
+
 
 
 for type_num in range(16):
