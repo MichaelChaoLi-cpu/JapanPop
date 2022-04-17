@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 """
+Get the Point Class and to Other Classes Distance
 
+Point: Japanese 3rd time Mesh 1 Km centroid
+
+Test Year: 2015
 
 Created on Wed Apr 13 12:08:49 2022
 
@@ -65,7 +69,7 @@ coords_distance_raster = addCoord(nx,xmin,xsize,ny,ymin,ysize, epsg)
 # note: there is no open shrublands
 
 #for type_num in range(16):
-type_num = 8
+type_num = 0
 while type_num < 16:
     year = 2015
     
@@ -97,5 +101,5 @@ while type_num < 16:
     print("dist_class_"+str(type_num))
     type_num += 1
 
-
+coords_distance_raster_result.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/00_2015_LandCover_CLASSandDIST.pkl")
 
