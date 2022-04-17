@@ -62,8 +62,11 @@ coords_distance_raster_result = coords_extration.copy()
 coords_distance_raster = addCoord(nx,xmin,xsize,ny,ymin,ysize, epsg)
 
 
+# note: there is no open shrublands
 
-for type_num in range(16):
+#for type_num in range(16):
+type_num = 8
+while type_num < 16:
     year = 2015
     
     rasterLocation = "F:/17_Article/01_Data/01_LandCover/LandCoverSingleClass/year_" + str(year) + "_class_"+ str(type_num) +".tif"
@@ -84,11 +87,15 @@ for type_num in range(16):
     coords_extration_aim = coords_extration[coords_extration.value == 100]
     coords_extration_aim = coords_extration_aim[['geometry']]
     
-    dist = ckdnearest(coords_distance_raster, coords_extration_aim, "dist_class_"+str(type_num))
-    dist_column = dist[["dist_class_"+str(type_num)]]
-    coords_distance_raster_result["binary_class_"+str(type_num)] = valueArray / 100
-    coords_distance_raster_result["dist_class_"+str(type_num)] = dist_column
+    if coords_extration_aim.shape[0] > 0:
+        dist = ckdnearest(coords_distance_raster, coords_extration_aim, "dist_class_"+str(type_num))
+        dist_column = dist[["dist_class_"+str(type_num)]]
+        coords_distance_raster_result["binary_class_"+str(type_num)] = valueArray / 100
+        coords_distance_raster_result["dist_class_"+str(type_num)] = dist_column
+    else:
+        print("class_"+str(type_num)+" is not in japan")
     print("dist_class_"+str(type_num))
+    type_num += 1
 
 
 
