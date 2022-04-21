@@ -11,6 +11,22 @@ Created on Mon Apr 11 10:24:04 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+import os
+import zipfile
+import glob
+import pandas as pd
+import geopandas as gpd
+
+aimFolder = "F:\\17_Article\\01_Data\\10_elevationSlopMesh"
+### unzip downloaded files
+fileList = os.listdir(aimFolder + "\\temp")
+for filename in fileList:
+    with zipfile.ZipFile(aimFolder + "\\temp\\" + filename, "r") as zip_ref:
+        zip_ref.extractall(aimFolder + "\\temp")
+
+"""
+This part is deprecated
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import time
@@ -76,4 +92,4 @@ for root, dirs, files in os.walk(aimFolder + "\\temp", topdown=False):
     for name in dirs:
         os.rmdir(os.path.join(root, name))
 os.rmdir(aimFolder + "\\temp")
-
+"""

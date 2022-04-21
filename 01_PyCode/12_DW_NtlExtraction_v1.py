@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """
+Extract NTL from Artilce
+
+Title: An extended time series (2000–2018) of global NPP-VIIRS-like nighttime light data from a cross-sensor calibration
+
 Created on Sun Apr 17 17:22:38 2022
 
 @author: li.chao.987@s.kyushu-u.ac.jp
