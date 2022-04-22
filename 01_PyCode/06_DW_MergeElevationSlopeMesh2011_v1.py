@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Download Elevation and Slope Mesh 2011 (H23)
+Source: https://www.eorc.jaxa.jp/ALOS/en/aw3d30/data/html_v2012/n020e120_n050e150.htm
 
-unziped them, and merge them into one shapefile
+Source: Jaxa
 
-year: 2011 (h23)
+Resolution: 30
+
+# Download Elevation and Slope Mesh 2011 (H23)
+
+# unziped them, and merge them into one shapefile
+
+# year: 2011 (h23)
 
 Created on Mon Apr 11 10:24:04 2022
 
@@ -16,6 +22,7 @@ import zipfile
 import glob
 import pandas as pd
 import geopandas as gpd
+from osgeo import gdal
 
 aimFolder = "F:\\17_Article\\01_Data\\10_elevationSlopMesh"
 ### unzip downloaded files
@@ -23,6 +30,15 @@ fileList = os.listdir(aimFolder + "\\temp")
 for filename in fileList:
     with zipfile.ZipFile(aimFolder + "\\temp\\" + filename, "r") as zip_ref:
         zip_ref.extractall(aimFolder + "\\temp")
+
+mergeFolder = aimFolder + "\\merge"        
+os.mkdir(mergeFolder)
+
+fileList = glob.glob(aimFolder + "\\temp\\*\\*DSM.tif")
+
+vrt = gdal.BuildVRT("merged.vrt", fileList)
+gdal.Translate(mergeFolder + "\\Elevation.tif", vrt)
+vrt = None
 
 """
 This part is deprecated

@@ -2,6 +2,8 @@
 """
 Source: MOD11A2 
 
+Warning: we do not solve the issues in gdal.Wrap(), "average" with nan.
+
 Created on Thu Apr 21 14:42:51 2022
 
 @author: li.chao.987@s.kyushu-u.ac.jp
@@ -65,13 +67,11 @@ dst_dataset = None
 
 ### resample and reproject
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_daytime_mean_re.tif", 
-                        aimFolder + "\\temp\\2015_daytime_mean.tif", dstSRS = "EPSG:4326", 
-                        xRes = 0.008, yRes = 0.008, resampleAlg = gdal.GRA_Average)
+                        aimFolder + "\\temp\\2015_daytime_mean.tif", dstSRS = "EPSG:4326")
 raster_rprj = None
 
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_daytime_std_re.tif", 
-                        aimFolder + "\\temp\\2015_daytime_std.tif", dstSRS = "EPSG:4326", 
-                        xRes = 0.008, yRes = 0.008, resampleAlg = "average")
+                        aimFolder + "\\temp\\2015_daytime_std.tif", dstSRS = "EPSG:4326")
 raster_rprj = None
 
 ### Night time Temp
@@ -112,13 +112,11 @@ dst_dataset = None
 
 ### resample and reproject
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_nighttime_mean_re.tif", 
-                        aimFolder + "\\temp\\2015_nighttime_mean.tif", dstSRS = "EPSG:4326", 
-                        xRes = 0.008, yRes = 0.008, resampleAlg = "average")
+                        aimFolder + "\\temp\\2015_nighttime_mean.tif", dstSRS = "EPSG:4326")
 raster_rprj = None
 
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_nighttime_std_re.tif", 
-                        aimFolder + "\\temp\\2015_nighttime_std.tif", dstSRS = "EPSG:4326", 
-                        xRes = 0.008, yRes = 0.008, resampleAlg = "average")
+                        aimFolder + "\\temp\\2015_nighttime_std.tif", dstSRS = "EPSG:4326")
 raster_rprj = None
 
 ### extraction
@@ -151,7 +149,16 @@ coords_extration = coordExtractionFromRaster(aimFolder + "\\temp\\2015_nighttime
 coords_extration = coordExtractionFromRaster(aimFolder + "\\temp\\2015_nighttime_std_re.tif",
                                              coords_extration, 'nightTimeStdTemp_'+str(year))
 
+colname = coords_extration.columns
+print(coords_extration[colname[4]].isna().sum())
+print(coords_extration[colname[5]].isna().sum())
+print(coords_extration[colname[6]].isna().sum())
+print(coords_extration[colname[7]].isna().sum())
 
+coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/03_2015_Temp.pkl")
 
+dropList = glob.glob(aimFolder + "\\temp\\*")
+for dropFile in dropList:
+    os.remove(dropFile)
 
-#coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/01_2015_NPP.pkl")
+os.rmdir(aimFolder + "\\temp")
