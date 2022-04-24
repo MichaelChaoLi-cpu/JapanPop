@@ -23,6 +23,9 @@ import glob
 import pandas as pd
 import geopandas as gpd
 from osgeo import gdal
+import math
+import rasterio
+import numpy as np
 
 aimFolder = "F:\\17_Article\\01_Data\\10_elevationSlopMesh"
 ### unzip downloaded files
@@ -39,6 +42,61 @@ fileList = glob.glob(aimFolder + "\\temp\\*\\*DSM.tif")
 vrt = gdal.BuildVRT("merged.vrt", fileList)
 gdal.Translate(mergeFolder + "\\Elevation.tif", vrt)
 vrt = None
+
+### resample and reproject
+raster_rprj = gdal.Warp(mergeFolder + "\\Elevation_re.tif", 
+                       mergeFolder + "\\Elevation.tif", dstSRS = "EPSG:4326",
+                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
+raster_rprj = None
+
+cmd = "gdaldem slope F:\\17_Article\\01_Data\\10_elevationSlopMesh\\merge\\Elevation_re.tif " + \
+    "F:\\17_Article\\01_Data\\10_elevationSlopMesh\\merge\\Slope.tif"
+os.system(cmd)
+
+### extraction
+coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/mesh_center_point.shp")
+
+def coordExtractionFromRaster(RasterName, GeoPandasDataFrame, NewColumnName):
+    rasterFile = rasterio.open(RasterName)
+    coords_extration = GeoPandasDataFrame.copy()
+    aimPoint = coords_extration
+    rasterArray = rasterFile.read(1)
+    
+    valueArray = []
+    for point in aimPoint['geometry']:
+        x = point.xy[0][0]
+        y = point.xy[1][0]
+        try:
+            row, col = rasterFile.index(x, y)
+            valueArray.append(rasterArray[row, col])
+        except:
+            valueArray.append(math.nan)
+        
+    valueArray = np.array(valueArray)
+    coords_extration[NewColumnName] = valueArray
+    rasterFile = None
+    return coords_extration
+
+coords_extration = coordExtractionFromRaster(mergeFolder + "\\Elevation_re.tif",
+                                             coords_extration, 'elevation')
+coords_extration = coordExtractionFromRaster(mergeFolder + "\\Slope.tif",
+                                             coords_extration, 'slope')
+
+colname = coords_extration.columns
+print(coords_extration[colname[4]].isna().sum())
+print(coords_extration[colname[5]].isna().sum())
+
+coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/04_ElevationSlope.pkl")
+
+dropList = glob.glob(aimFolder + "\\temp\\*\\*")
+for dropFile in dropList:
+    os.remove(dropFile)
+
+dropList = glob.glob(aimFolder + "\\merge\\*")
+for dropFile in dropList:
+    os.remove(dropFile)
+
+os.rmdir(aimFolder + "\\merge")
 
 """
 This part is deprecated

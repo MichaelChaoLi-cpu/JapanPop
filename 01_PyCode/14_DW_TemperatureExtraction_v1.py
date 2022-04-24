@@ -16,6 +16,7 @@ import numpy as np
 import gc
 import geopandas as gpd
 import rasterio
+import math
 
 aimFolder = "F:\\17_Article\\01_Data\\08_Temperature\\Surf_Temp_8Days_1Km_v6"
 os.mkdir(aimFolder + "\\temp")
@@ -67,11 +68,13 @@ dst_dataset = None
 
 ### resample and reproject
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_daytime_mean_re.tif", 
-                        aimFolder + "\\temp\\2015_daytime_mean.tif", dstSRS = "EPSG:4326")
+                        aimFolder + "\\temp\\2015_daytime_mean.tif", dstSRS = "EPSG:4326",
+                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
 raster_rprj = None
 
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_daytime_std_re.tif", 
-                        aimFolder + "\\temp\\2015_daytime_std.tif", dstSRS = "EPSG:4326")
+                        aimFolder + "\\temp\\2015_daytime_std.tif", dstSRS = "EPSG:4326",
+                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
 raster_rprj = None
 
 ### Night time Temp
@@ -112,11 +115,13 @@ dst_dataset = None
 
 ### resample and reproject
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_nighttime_mean_re.tif", 
-                        aimFolder + "\\temp\\2015_nighttime_mean.tif", dstSRS = "EPSG:4326")
+                        aimFolder + "\\temp\\2015_nighttime_mean.tif", dstSRS = "EPSG:4326",
+                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
 raster_rprj = None
 
 raster_rprj = gdal.Warp(aimFolder + "\\temp\\2015_nighttime_std_re.tif", 
-                        aimFolder + "\\temp\\2015_nighttime_std.tif", dstSRS = "EPSG:4326")
+                        aimFolder + "\\temp\\2015_nighttime_std.tif", dstSRS = "EPSG:4326",
+                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
 raster_rprj = None
 
 ### extraction
