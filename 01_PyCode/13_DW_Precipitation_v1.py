@@ -11,6 +11,9 @@ Created on Wed Apr 20 15:04:28 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 import numpy as np
 import os
 from osgeo import gdal
@@ -83,6 +86,8 @@ def coordExtractionFromRaster(RasterName, GeoPandasDataFrame, NewColumnName):
 
 coords_extration = coordExtractionFromRaster(outputAnnualRasterName,
                                              coords_extration, 'precipitation_'+str(year))
+
+coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/04_precipitation.pkl")
 
 dropList = glob.glob(rawFileLocation  + "\\temp\\*")
 for dropFile in dropList:
