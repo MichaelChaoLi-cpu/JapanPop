@@ -20,6 +20,7 @@ coastlineShapeFile = gpd.read_file("F:/17_Article/01_Data/13_CoastLine/MergedCoa
 coastlineShapeFileDissolved = coastlineShapeFile.dissolve()
 coastlineShapeFileDissolved = coastlineShapeFileDissolved.set_crs(epsg = 4326)
 
-coords_extration_dist = gpd.sjoin_nearest(coords_extration, coastlineShapeFileDissolved, distance_col="distances")
-    
-coords_extration["coast_dist"] = valueArray
+coords_extration_dist = gpd.sjoin_nearest(coords_extration, coastlineShapeFileDissolved, distance_col="dist_coast")
+coords_extration_dist = coords_extration_dist[['x', 'y', 'id', 'geometry', 'dist_coast']]
+   
+coords_extration_dist.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/06_CoastLine.pkl")
