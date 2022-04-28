@@ -11,13 +11,14 @@ Created on Wed Apr 13 12:08:49 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 import pandas as pd
 import geopandas as gpd
 import numpy as np
 import rasterio
 from scipy.spatial import cKDTree
-from shapely.geometry import Point
-from geocube.api.core import make_geocube
 
 # make the raster -180 -60 180 90
 nx = 4000                                       # number of cells in the x direction
