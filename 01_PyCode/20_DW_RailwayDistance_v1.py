@@ -7,13 +7,15 @@ Created on Wed Apr 27 11:58:43 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
 import zipfile
 import glob
-import pandas as pd
 import geopandas as gpd
 
 aimFolder = "F:\\17_Article\\01_Data\\15_RailWay"
@@ -65,3 +67,5 @@ railwayShapeFile = railwayShapeFile[['geometry']]
 coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/mesh_center_point.shp")
 
 joinDistance = coords_extration.sjoin_nearest(railwayShapeFile, distance_col = "dist")
+joinDistance = joinDistance.rename(columns = {"dist" : "rail_dist"})
+joinDistance.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/08_RailwayDist.pkl")
