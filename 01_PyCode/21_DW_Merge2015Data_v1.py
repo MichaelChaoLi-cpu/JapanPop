@@ -36,4 +36,36 @@ gdf_mesh['PTN_2015_log'] = np.log(gdf_mesh.PTN_2015 + 1)
 ### Other data folder
 otherDataFolder = "F:\\17_Article\\01_Data\\99_MiddleFileStation\\"
 ### land cover
-gdf_landCover = pd.read_pickle(otherDataFolder+"05_roadDensity.pkl")
+gdf_landCover = pd.read_pickle(otherDataFolder+"00_2015_LandCover_CLASSandDIST.pkl")
+gdf_landCover = gdf_landCover.drop(columns = ['x', 'y', 'geometry'])
+gdf_landCover = gdf_landCover.astype('float')
+gdf_landCover.id = gdf_landCover.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_landCover, on = "id", how = 'left')
+del gdf_landCover
+
+### NPP
+gdf_other = pd.read_pickle(otherDataFolder+"01_2015_NPP.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### NTL
+gdf_other = pd.read_pickle(otherDataFolder+"02_2015_NTL.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### temperature
+gdf_other = pd.read_pickle(otherDataFolder+"03_2015_Temp.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other

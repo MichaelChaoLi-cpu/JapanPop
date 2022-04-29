@@ -9,6 +9,9 @@ Created on Sun Apr 17 17:22:38 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 import os
 import zipfile
 import glob
@@ -56,3 +59,5 @@ rasterFile = None
 fileList = glob.glob(aimFolder + "\\temp\\*")
 for filename in fileList:
     os.remove(filename)
+
+os.rmdir(aimFolder + "\\temp")
