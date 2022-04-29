@@ -42,13 +42,14 @@ for hdf5File in rawFileList:
 
 annualAveragePrecipitation = np.nanmean(annualAveragePrecipitation, axis = 0)   
 annualAveragePrecipitation = annualAveragePrecipitation.transpose()
-    
+annualAveragePrecipitation = annualAveragePrecipitation[::-1,:]
+ 
 outputAnnualRasterName = rawFileLocation + "/temp/" + str(year) + "_precipitation_m.tif"
 
 ncol = annualAveragePrecipitation.shape[1]
 nrow = annualAveragePrecipitation.shape[0]
 nband = 1
-geotransform = (-180.0, 0.1, 0.0, -90.0, 0.0, 0.1)
+geotransform = (-180.0, 0.1, 0.0, 90.0, 0.0, -0.1)
 
 src_dataset = gdal.Open("D:/10_Article/08_MonthlyRaster/IDW_REM/200702.tif")
 #geotransform = src_dataset.GetGeoTransform()

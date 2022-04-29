@@ -11,7 +11,6 @@ get_ipython().magic('reset -sf')
 import geopandas as gpd
 import glob
 import pandas as pd
-import math
 import numpy as np
 
 ### mesh
@@ -69,3 +68,64 @@ gdf_other = gdf_other.astype('float')
 gdf_other.id = gdf_other.id.astype('int')
 gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
 del gdf_other
+
+### precipitation
+gdf_other = pd.read_pickle(otherDataFolder+"04_precipitation.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### road Density
+gdf_other = pd.read_pickle(otherDataFolder+"05_roadDensity.pkl")
+gdf_other.columns
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### coastline distance
+gdf_other = pd.read_pickle(otherDataFolder+"06_CoastLine.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### high population density
+gdf_other = pd.read_pickle(otherDataFolder+"07_PopulationDensityClass.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_other = gdf_other.rename(columns = \
+                             {"within" : "highPop_within", \
+                              "dist" : "highPop_dist"})
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### railway distance
+gdf_other = pd.read_pickle(otherDataFolder+"08_RailwayDist.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+### poi distance
+gdf_other = pd.read_pickle(otherDataFolder+"09_PoiDist.pkl")
+gdf_other.columns
+gdf_other = gdf_other.drop(columns = ['x', 'y', 'geometry'])
+gdf_other = gdf_other[['id', 'school_dist', 'hospital_dist', \
+                       'park_dist', 'welfare_dist', \
+                           'firestation_dist', 'postOffice_dist']]
+gdf_other = gdf_other.astype('float')
+gdf_other.id = gdf_other.id.astype('int')
+gdf_mesh = pd.merge(gdf_mesh, gdf_other, on = "id", how = 'left')
+del gdf_other
+
+gdf_mesh.to_pickle(otherDataFolder+"99_mergedDataset2015.pkl")
