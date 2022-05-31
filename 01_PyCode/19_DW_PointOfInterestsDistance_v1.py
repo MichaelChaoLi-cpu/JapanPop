@@ -127,6 +127,7 @@ gdf.crs
 gdf = gdf.set_crs(epsg = 6668)
 gdf = gdf.to_crs(epsg = 4326)
 gdf = gdf.dissolve()
+gdf = gdf[["geometry"]]
 
 coords_extration = coords_extration.drop(columns = ['index_right'])
 coords_extration = coords_extration.sjoin_nearest(gdf, distance_col = "park_dist")
@@ -205,6 +206,7 @@ gdf.crs
 gdf = gdf.set_crs(epsg = 6668)
 gdf = gdf.to_crs(epsg = 4326)
 gdf = gdf.dissolve()
+gdf = gdf[['geometry']]
 
 coords_extration = coords_extration.drop(columns = ['index_right'])
 coords_extration = coords_extration.sjoin_nearest(gdf, distance_col = "welfare_dist")
@@ -278,6 +280,7 @@ gdf.crs
 gdf = gdf.set_crs(epsg = 6668)
 gdf = gdf.to_crs(epsg = 4326)
 gdf = gdf.dissolve()
+gdf = gdf[['geometry']]
 
 coords_extration = coords_extration.drop(columns = ['index_right'])
 coords_extration = coords_extration.sjoin_nearest(gdf, distance_col = "firestation_dist")
@@ -296,6 +299,7 @@ gdf = gpd.read_file(fileList[0])
 gdf.crs
 gdf = gdf.to_crs(epsg = 4326)
 gdf = gdf.dissolve()
+gdf = gdf[['geometry']]
 
 coords_extration = coords_extration.drop(columns = ['index_right'])
 coords_extration = coords_extration.sjoin_nearest(gdf, distance_col = "postOffice_dist")
