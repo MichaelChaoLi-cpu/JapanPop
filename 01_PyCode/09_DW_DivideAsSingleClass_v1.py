@@ -13,11 +13,12 @@ from osgeo import gdal
 import numpy as np
 import os
 
-original_raster = gdal.Open("F:/17_Article/01_Data/01_LandCover/LandCoverMerge/LandCover_UMD_2015_500m.tif")
+original_raster = gdal.Open("F:/16_Article/01_Data/01_LandCover/LandCoverMerge/LandCover_UMD_2015_500m.tif")
 
-aimFolder = "F:/17_Article/01_Data/01_LandCover/LandCover0008WGS/"
+aimFolder = "F:/16_Article/01_Data/01_LandCover/LandCover0008WGS/"
 raster_rprj = gdal.Warp(aimFolder + "LandCover_UMD_2015_0008_WGS.tif", original_raster, dstSRS = "EPSG:4326", 
-                        xRes = 0.008, yRes = 0.008, resampleAlg = "mode")
+                        xRes = -1.008, yRes = 0.008, resampleAlg = "mode")
+raster_rprj = None
 
 original_raster.FlushCache()
 original_raster = None
