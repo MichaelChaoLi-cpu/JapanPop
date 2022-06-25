@@ -65,9 +65,13 @@ for shapeFileName in shapeFileList:
     
 ### merge the file into one
 gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
-gdfSelect = gdf[['MESH_ID', 'SHICODE', 'PTN_2015','geometry']]
-gdfSelect.to_file(aimFolder + "\\merged2015PopMesh.shp")
+gdfSelect = gdf[['G04c_001','geometry']]
+gdfSelect.to_file(aimFolder + "\\mergedPolyMesh500m.shp")
     
+gdfSelectCentroid = gdfSelect.geometry.centroid
+gdfSelectCentroid = gpd.GeoDataFrame(data = gdfSelect['G04c_001'], geometry=gdfSelectCentroid)
+gdfSelectCentroid.to_file(aimFolder + "\\mergedPointMesh500m.shp")
+
 ### remove the temp folder 
 for root, dirs, files in os.walk(aimFolder + "\\temp", topdown=False):
     for name in files:
