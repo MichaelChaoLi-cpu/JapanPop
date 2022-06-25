@@ -51,9 +51,9 @@ while beginIndex < 1 + 177:
     beginIndex += 1
 
 ### unzip downloaded files
-fileList = os.listdir(aimFolder + "\\temp")
+fileList = glob.glob(aimFolder + "\\temp" + "\\*.zip")
 for filename in fileList:
-    with zipfile.ZipFile(aimFolder + "\\temp\\" + filename, "r") as zip_ref:
+    with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(aimFolder + "\\temp")
         
 ### read the shapefile        
@@ -62,3 +62,16 @@ gdpFileArray = []
 for shapeFileName in shapeFileList:
     gdpFile = gpd.read_file(shapeFileName)
     gdpFileArray.append(gdpFile)
+    
+### merge the file into one
+gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
+gdfSelect = gdf[['MESH_ID', 'SHICODE', 'PTN_2015','geometry']]
+gdfSelect.to_file(aimFolder + "\\merged2015PopMesh.shp")
+    
+### remove the temp folder 
+for root, dirs, files in os.walk(aimFolder + "\\temp", topdown=False):
+    for name in files:
+        os.remove(os.path.join(root, name))
+    for name in dirs:
+        os.rmdir(os.path.join(root, name))
+os.rmdir(aimFolder + "\\temp")
