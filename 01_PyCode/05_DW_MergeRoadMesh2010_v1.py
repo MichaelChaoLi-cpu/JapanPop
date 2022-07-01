@@ -52,22 +52,73 @@ while beginIndex < 776:
 
 driver.quit()
 
-### unzip downloaded files
+### unzip downloaded files 2010 
 fileList = glob.glob(aimFolder + "\\temp" + "\\N04-10*.zip")
 for filename in fileList:
     with zipfile.ZipFile(filename, "r") as zip_ref:
         zip_ref.extractall(aimFolder + "\\temp")
 
-### read the shapefile        
+### read the shapefile 2010        
 shapeFileList = glob.glob(aimFolder + "\\temp" + "\\*.shp")
 gdpFileArray = []
 for shapeFileName in shapeFileList:
     gdpFile = gpd.read_file(shapeFileName)
     gdpFileArray.append(gdpFile)
 
-### merge the file into one
+### merge the file into one 2010
 gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
 gdf.to_file(aimFolder + "\\MeshRoad2011.shp")
+
+### unzip downloaded files 2002 
+fileList = glob.glob(aimFolder + "\\temp" + "\\N04-02*.zip")
+for filename in fileList:
+    with zipfile.ZipFile(filename, "r") as zip_ref:
+        zip_ref.extractall(aimFolder + "\\temp")
+
+### read the shapefile 2002        
+shapeFileList = glob.glob(aimFolder + "\\temp" + "\\N04_14*.shp")
+gdpFileArray = []
+for shapeFileName in shapeFileList:
+    gdpFile = gpd.read_file(shapeFileName)
+    gdpFileArray.append(gdpFile)
+    
+### merge the file into one 2002
+gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
+gdf.to_file(aimFolder + "\\MeshRoad2002.shp")
+
+### unzip downloaded files 2003 
+fileList = glob.glob(aimFolder + "\\temp" + "\\N04-03*.zip")
+for filename in fileList:
+    with zipfile.ZipFile(filename, "r") as zip_ref:
+        zip_ref.extractall(aimFolder + "\\temp")
+
+### read the shapefile 2003        
+shapeFileList = glob.glob(aimFolder + "\\temp" + "\\N04_15*.shp")
+gdpFileArray = []
+for shapeFileName in shapeFileList:
+    gdpFile = gpd.read_file(shapeFileName)
+    gdpFileArray.append(gdpFile)
+    
+### merge the file into one 2003
+gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
+gdf.to_file(aimFolder + "\\MeshRoad2003.shp")
+
+### unzip downloaded files 2004 
+fileList = glob.glob(aimFolder + "\\temp" + "\\N04-04*.zip")
+for filename in fileList:
+    with zipfile.ZipFile(filename, "r") as zip_ref:
+        zip_ref.extractall(aimFolder + "\\temp")
+
+### read the shapefile 2003        
+shapeFileList = glob.glob(aimFolder + "\\temp" + "\\N04_16*.shp")
+gdpFileArray = []
+for shapeFileName in shapeFileList:
+    gdpFile = gpd.read_file(shapeFileName)
+    gdpFileArray.append(gdpFile)
+    
+### merge the file into one 2003
+gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
+gdf.to_file(aimFolder + "\\MeshRoad2004.shp")
 
 ### remove the temp folder 
 for root, dirs, files in os.walk(aimFolder + "\\temp", topdown=False):
