@@ -28,8 +28,17 @@ chromeOptions.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(ChromeDriverManager(version="102.0.5005.61").install(), \
                           chrome_options = chromeOptions)
 
-locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2000&aggregateUnit=H&serveyId=H002005112000&statsId=T000386"
+locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=H&serveyId=H002005112015&statsId=T000847"
 driver.get(locationService)
+
+# 2000
+# https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2000&aggregateUnit=H&serveyId=H002005112000&statsId=T000386
+# 2005
+# https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2005&aggregateUnit=H&serveyId=H002005112005&statsId=T000387
+# 2010
+# https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2010&aggregateUnit=H&serveyId=H002005112010&statsId=T000609
+# 2015
+# https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=H&serveyId=H002005112015&statsId=T000847
 
 #/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[4]/div/div/article[1]/div/ul/li[4]/a
 #
@@ -51,6 +60,6 @@ while page < 1+8:
         
         beginIndex += 1
         
-    driver.find_element_by_xpath("/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[5]/div/div[1]/span[8]")
+    driver.find_element_by_xpath("/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[5]/div/div[1]/span[8]").click()
     time.sleep(5)
     page += 1
