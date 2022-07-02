@@ -13,9 +13,6 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
-import zipfile
-import glob
-import pandas as pd
 
 aimFolder = "F:\\17_Article\\01_Data\\09_populationMesh\\500m"
 os.mkdir(aimFolder + "\\temp")
@@ -63,3 +60,5 @@ while page < 1+8:
     driver.find_element_by_xpath("/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[5]/div/div[1]/span[8]").click()
     time.sleep(5)
     page += 1
+    
+driver.quit()
