@@ -13,7 +13,7 @@ get_ipython().magic('reset -sf')
 import geopandas as gpd
 
 ### extraction
-coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/mesh_center_point.shp")
+coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPointMesh500m.shp")
 
 riverShapeFile = gpd.read_file("F:/17_Article/01_Data/12_River/MergedRiver.shp")
 
