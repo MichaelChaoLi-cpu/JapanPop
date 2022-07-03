@@ -17,6 +17,9 @@ Created on Mon Apr 11 10:24:04 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 import os
 import zipfile
 import glob
@@ -46,7 +49,7 @@ vrt = None
 ### resample and reproject
 raster_rprj = gdal.Warp(mergeFolder + "\\Elevation_re.tif", 
                        mergeFolder + "\\Elevation.tif", dstSRS = "EPSG:4326",
-                        xRes = 0.008, yRes = 0.008, resampleAlg = "average", srcNodata = math.nan)
+                        xRes = 0.004, yRes = -0.004, resampleAlg = "average", srcNodata = math.nan)
 raster_rprj = None
 
 cmd = "gdaldem slope F:\\17_Article\\01_Data\\10_elevationSlopMesh\\merge\\Elevation_re.tif " + \
@@ -54,7 +57,7 @@ cmd = "gdaldem slope F:\\17_Article\\01_Data\\10_elevationSlopMesh\\merge\\Eleva
 os.system(cmd)
 
 ### extraction
-coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/mesh_center_point.shp")
+coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPointMesh500m.shp")
 
 def coordExtractionFromRaster(RasterName, GeoPandasDataFrame, NewColumnName):
     rasterFile = rasterio.open(RasterName)
@@ -83,10 +86,13 @@ coords_extration = coordExtractionFromRaster(mergeFolder + "\\Slope.tif",
                                              coords_extration, 'slope')
 
 colname = coords_extration.columns
-print(coords_extration[colname[4]].isna().sum())
-print(coords_extration[colname[5]].isna().sum())
+print(coords_extration.iloc[:,2].isna().sum())
+print(coords_extration.iloc[:,3].isna().sum())
+coords_extration = pd.DataFrame(coords_extration.drop(columns='geometry'))
+coords_extration['year'] = 2011
+coords_extration = coords_extration.set_index(['G04c_001', 'year'])
 
-coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/04_ElevationSlope.pkl")
+coords_extration.to_pickle("F:/17_Article/01_Data/98_20yearPickles/05_ElevationSlope.pkl")
 
 dropList = glob.glob(aimFolder + "\\temp\\*\\*")
 for dropFile in dropList:
