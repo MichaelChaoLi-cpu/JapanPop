@@ -11,6 +11,7 @@ from IPython import get_ipython
 get_ipython().magic('reset -sf')
 
 import geopandas as gpd
+import pandas as pd
 
 ### extraction
 coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPointMesh500m.shp")
@@ -37,4 +38,9 @@ for point in aimPoint['geometry']:
     
 coords_extration["river_dist"] = valueArray
 
-coords_extration.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/06_river_dist.pkl")
+coords_extration = pd.DataFrame(coords_extration.drop(columns='geometry'))
+coords_extration['year'] = 2010
+coords_extration = coords_extration.rename(columns={'river_dist':'riverDist'})
+coords_extration = coords_extration.set_index(['G04c_001', 'year'])
+
+coords_extration.to_pickle("F:/17_Article/01_Data/98_20yearPickles/05_RiverDist.pkl")
