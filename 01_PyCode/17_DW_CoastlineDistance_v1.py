@@ -24,6 +24,7 @@ coastlineShapeFileDissolved = coastlineShapeFile.dissolve()
 coastlineShapeFileDissolved = coastlineShapeFileDissolved.set_crs(epsg = 4326)
 
 coords_extration_dist = gpd.sjoin_nearest(coords_extration, coastlineShapeFileDissolved, distance_col="dist_coast")
-coords_extration_dist = coords_extration_dist[['x', 'y', 'id', 'geometry', 'dist_coast']]
+coords_extration_result = pd.DataFrame(coords_extration_dist[['G04c_001', 'dist_coast']])
+coords_extration_result['year'] = 2010
    
-coords_extration_dist.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/06_CoastLine.pkl")
+coords_extration_result.to_pickle("F:/17_Article/01_Data/98_20yearPickles/06_CoastLine.pkl")
