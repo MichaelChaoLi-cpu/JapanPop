@@ -168,5 +168,7 @@ HighPopDensity2015 = HighPopDensity2015.set_index(['G04c_001', 'year'])
 #result['within'] = result['within'].fillna(0)
 #result = result.drop(columns = ["index_right"]) 
 
-result.loc[result['within'] == 1, 'dist'] = 0
-result.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/07_PopulationDensityClass.pkl")
+HighPopDensity = pd.concat([HighPopDensity2000, HighPopDensity2005,
+                            HighPopDensity2010, HighPopDensity2015], axis=0)
+
+HighPopDensity.to_pickle("F:/17_Article/01_Data/98_20yearPickles/07_PopulationDensityClass.pkl")
