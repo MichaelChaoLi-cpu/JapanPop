@@ -28,12 +28,22 @@ POIgovernment = POIgovernment[['geometry']].dissolve().set_crs(epsg = 4326)
 
 distPOIgovernment = coords_extration.set_crs(epsg = 4326).sjoin_nearest(POIgovernment, distance_col = "POIgovernmentDist")
 
-POIpolice = pointOfInterestDf[pointOfInterestDf.POItype == 13]
+POIpolice = pointOfInterestDf[pointOfInterestDf.POItype == 14]
 POIpolice = POIpolice[['geometry']].dissolve().set_crs(epsg = 4326)
 
 distPOIpolice = coords_extration.set_crs(epsg = 4326).sjoin_nearest(POIpolice, distance_col = "POIpoliceDist")
 
-POIfireStation = pointOfInterestDf[pointOfInterestDf.POItype == 13]
+POIfireStation = pointOfInterestDf[pointOfInterestDf.POItype == 15]
 POIfireStation = POIfireStation[['geometry']].dissolve().set_crs(epsg = 4326)
 
 distPOIfireStation = coords_extration.set_crs(epsg = 4326).sjoin_nearest(POIfireStation, distance_col = "POIfireStationDist")
+
+POIschool = pointOfInterestDf[pointOfInterestDf.POItype == 16]
+POIschool = POIschool[['geometry']].dissolve().set_crs(epsg = 4326)
+
+distPOIschool = coords_extration.set_crs(epsg = 4326).sjoin_nearest(POIschool, distance_col = "POIschoolDist")
+
+POIhospital = pointOfInterestDf[pointOfInterestDf.POItype == 17]
+POIhospital = POIhospital[['geometry']].dissolve().set_crs(epsg = 4326)
+
+distPOIhospital = coords_extration.set_crs(epsg = 4326).sjoin_nearest(POIhospital, distance_col = "POIhospitalDist")
