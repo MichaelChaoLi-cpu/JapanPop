@@ -108,7 +108,7 @@ toStation2006 = toStation2006.set_index(['G04c_001', 'year'])
 railStation2006 = pd.concat([toRailway2006, toStation2006], axis=1)
 
 ### 2007
-railwayShapeFile2007 = gpd.read_file(aimFolder + "\\temp\\N02-06-g_RailroadSection.shp" )
+railwayShapeFile2007 = gpd.read_file(aimFolder + "\\temp\\N02-07-g_RailroadSection.shp" )
 railwayShapeFile2007 = railwayShapeFile2007.dissolve()
 railwayShapeFile2007 = railwayShapeFile2007.set_crs(epsg = 4326)
 railwayShapeFile2007 = railwayShapeFile2007[['geometry']]
@@ -118,7 +118,7 @@ toRailway2007 = pd.DataFrame(toRailway2007.drop(columns=['geometry', 'index_righ
 toRailway2007['year'] = 2007
 toRailway2007 = toRailway2007.set_index(['G04c_001', 'year'])
 
-stationShapeFile2007 = gpd.read_file(aimFolder + "\\temp\\N02-06-g_Station.shp" )
+stationShapeFile2007 = gpd.read_file(aimFolder + "\\temp\\N02-07-g_Station.shp" )
 stationShapeFile2007 = stationShapeFile2007.dissolve()
 stationShapeFile2007 = stationShapeFile2007.set_crs(epsg = 4326)
 stationShapeFile2007 = stationShapeFile2007[['geometry']]
@@ -130,6 +130,74 @@ toStation2007 = toStation2007.set_index(['G04c_001', 'year'])
 
 railStation2007 = pd.concat([toRailway2007, toStation2007], axis=1)
 
+### 2008
+railwayShapeFile2008 = gpd.read_file(aimFolder + "\\temp\\N02-08-g_RailroadSection.shp" )
+railwayShapeFile2008 = railwayShapeFile2008.dissolve()
+railwayShapeFile2008 = railwayShapeFile2008.set_crs(epsg = 4326)
+railwayShapeFile2008 = railwayShapeFile2008[['geometry']]
+
+toRailway2008 = coords_extration.sjoin_nearest(railwayShapeFile2008, distance_col = "distRailway")
+toRailway2008 = pd.DataFrame(toRailway2008.drop(columns=['geometry', 'index_right']))
+toRailway2008['year'] = 2008
+toRailway2008 = toRailway2008.set_index(['G04c_001', 'year'])
+
+stationShapeFile2008 = gpd.read_file(aimFolder + "\\temp\\N02-08-g_Station.shp" )
+stationShapeFile2008 = stationShapeFile2008.dissolve()
+stationShapeFile2008 = stationShapeFile2008.set_crs(epsg = 4326)
+stationShapeFile2008 = stationShapeFile2008[['geometry']]
+
+toStation2008 = coords_extration.sjoin_nearest(stationShapeFile2008, distance_col = "distStation")
+toStation2008 = pd.DataFrame(toStation2008.drop(columns=['geometry', 'index_right']))
+toStation2008['year'] = 2008
+toStation2008 = toStation2008.set_index(['G04c_001', 'year'])
+
+railStation2008 = pd.concat([toRailway2008, toStation2008], axis=1)
+
+### 2011
+railwayShapeFile2011 = gpd.read_file(aimFolder + "\\temp\\N02-11_RailroadSection.shp" )
+railwayShapeFile2011 = railwayShapeFile2011.dissolve()
+railwayShapeFile2011 = railwayShapeFile2011.set_crs(epsg = 4326)
+railwayShapeFile2011 = railwayShapeFile2011[['geometry']]
+
+toRailway2011 = coords_extration.sjoin_nearest(railwayShapeFile2011, distance_col = "distRailway")
+toRailway2011 = pd.DataFrame(toRailway2011.drop(columns=['geometry', 'index_right']))
+toRailway2011['year'] = 2011
+toRailway2011 = toRailway2011.set_index(['G04c_001', 'year'])
+
+stationShapeFile2011 = gpd.read_file(aimFolder + "\\temp\\N02-11_Station.shp" )
+stationShapeFile2011 = stationShapeFile2011.dissolve()
+stationShapeFile2011 = stationShapeFile2011.set_crs(epsg = 4326)
+stationShapeFile2011 = stationShapeFile2011[['geometry']]
+
+toStation2011 = coords_extration.sjoin_nearest(stationShapeFile2011, distance_col = "distStation")
+toStation2011 = pd.DataFrame(toStation2011.drop(columns=['geometry', 'index_right']))
+toStation2011['year'] = 2011
+toStation2011 = toStation2011.set_index(['G04c_001', 'year'])
+
+railStation2011 = pd.concat([toRailway2011, toStation2011], axis=1)
+
+### 2012
+railwayShapeFile2012 = gpd.read_file(aimFolder + "\\temp\\N02-12_RailroadSection.shp" )
+railwayShapeFile2012 = railwayShapeFile2012.dissolve()
+railwayShapeFile2012 = railwayShapeFile2012.set_crs(epsg = 4326)
+railwayShapeFile2012 = railwayShapeFile2012[['geometry']]
+
+toRailway2012 = coords_extration.sjoin_nearest(railwayShapeFile2012, distance_col = "distRailway")
+toRailway2012 = pd.DataFrame(toRailway2012.drop(columns=['geometry', 'index_right']))
+toRailway2012['year'] = 2012
+toRailway2012 = toRailway2012.set_index(['G04c_001', 'year'])
+
+stationShapeFile2012 = gpd.read_file(aimFolder + "\\temp\\N02-12_Station.shp" )
+stationShapeFile2012 = stationShapeFile2012.dissolve()
+stationShapeFile2012 = stationShapeFile2012.set_crs(epsg = 4326)
+stationShapeFile2012 = stationShapeFile2012[['geometry']]
+
+toStation2012 = coords_extration.sjoin_nearest(stationShapeFile2012, distance_col = "distStation")
+toStation2012 = pd.DataFrame(toStation2012.drop(columns=['geometry', 'index_right']))
+toStation2012['year'] = 2012
+toStation2012 = toStation2012.set_index(['G04c_001', 'year'])
+
+railStation2012 = pd.concat([toRailway2012, toStation2012], axis=1)
 
 joinDistance = coords_extration.sjoin_nearest(railwayShapeFile, distance_col = "dist")
 joinDistance = joinDistance.rename(columns = {"dist" : "rail_dist"})
