@@ -3,7 +3,10 @@ This repo is the project to estimate the population distribution in Japan. (DP17
 
 ## Projection and Resolution
 WGS84 0.004 degree  
-
+   
+## Period:
+2001 - 2020  
+  
 ## Industry Standard Guidelines (ISG)   
 Due to my poor memory, I cannot remember too many things. To reduce the recalling 
 time, we set this ISG.     
