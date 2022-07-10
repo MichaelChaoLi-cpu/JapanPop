@@ -199,6 +199,52 @@ toStation2012 = toStation2012.set_index(['G04c_001', 'year'])
 
 railStation2012 = pd.concat([toRailway2012, toStation2012], axis=1)
 
+### 2013
+railwayShapeFile2013 = gpd.read_file(aimFolder + "\\temp\\N02-13_RailroadSection.shp" )
+railwayShapeFile2013 = railwayShapeFile2013.dissolve()
+railwayShapeFile2013 = railwayShapeFile2013.set_crs(epsg = 4326)
+railwayShapeFile2013 = railwayShapeFile2013[['geometry']]
+
+toRailway2013 = coords_extration.sjoin_nearest(railwayShapeFile2013, distance_col = "distRailway")
+toRailway2013 = pd.DataFrame(toRailway2013.drop(columns=['geometry', 'index_right']))
+toRailway2013['year'] = 2013
+toRailway2013 = toRailway2013.set_index(['G04c_001', 'year'])
+
+stationShapeFile2013 = gpd.read_file(aimFolder + "\\temp\\N02-13_Station.shp" )
+stationShapeFile2013 = stationShapeFile2013.dissolve()
+stationShapeFile2013 = stationShapeFile2013.set_crs(epsg = 4326)
+stationShapeFile2013 = stationShapeFile2013[['geometry']]
+
+toStation2013 = coords_extration.sjoin_nearest(stationShapeFile2013, distance_col = "distStation")
+toStation2013 = pd.DataFrame(toStation2013.drop(columns=['geometry', 'index_right']))
+toStation2013['year'] = 2013
+toStation2013 = toStation2013.set_index(['G04c_001', 'year'])
+
+railStation2013 = pd.concat([toRailway2013, toStation2013], axis=1)
+
+### 2014
+railwayShapeFile2014 = gpd.read_file(aimFolder + "\\temp\\N02-14_RailroadSection.shp" )
+railwayShapeFile2014 = railwayShapeFile2014.dissolve()
+railwayShapeFile2014 = railwayShapeFile2014.set_crs(epsg = 4326)
+railwayShapeFile2014 = railwayShapeFile2014[['geometry']]
+
+toRailway2014 = coords_extration.sjoin_nearest(railwayShapeFile2014, distance_col = "distRailway")
+toRailway2014 = pd.DataFrame(toRailway2014.drop(columns=['geometry', 'index_right']))
+toRailway2014['year'] = 2014
+toRailway2014 = toRailway2014.set_index(['G04c_001', 'year'])
+
+stationShapeFile2014 = gpd.read_file(aimFolder + "\\temp\\N02-14_Station.shp" )
+stationShapeFile2014 = stationShapeFile2014.dissolve()
+stationShapeFile2014 = stationShapeFile2014.set_crs(epsg = 4326)
+stationShapeFile2014 = stationShapeFile2014[['geometry']]
+
+toStation2014 = coords_extration.sjoin_nearest(stationShapeFile2014, distance_col = "distStation")
+toStation2014 = pd.DataFrame(toStation2014.drop(columns=['geometry', 'index_right']))
+toStation2014['year'] = 2014
+toStation2014 = toStation2014.set_index(['G04c_001', 'year'])
+
+railStation2014 = pd.concat([toRailway2014, toStation2014], axis=1)
+
 joinDistance = coords_extration.sjoin_nearest(railwayShapeFile, distance_col = "dist")
 joinDistance = joinDistance.rename(columns = {"dist" : "rail_dist"})
 joinDistance.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/08_RailwayDist.pkl")
