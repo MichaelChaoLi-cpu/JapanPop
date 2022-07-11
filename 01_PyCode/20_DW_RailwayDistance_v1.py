@@ -103,6 +103,8 @@ def distanceRailwayStation(data_year_index, tempFolder, coords_extration):
 
 distRailStationDf = Parallel(n_jobs=6)(delayed(distanceRailwayStation)(data_year_index, tempFolder, coords_extration) for data_year_index in data_year)
 
+distRailStationLongDf = pd.concat(distRailStationDf, axis=0)
+distRailStationLongDf.to_pickle("F:/17_Article/01_Data/98_20yearPickles/09_distRailwayStation.pkl")
 #joinDistance = coords_extration.sjoin_nearest(railwayShapeFile, distance_col = "dist")
 #joinDistance = joinDistance.rename(columns = {"dist" : "rail_dist"})
 #joinDistance.to_pickle("F:/17_Article/01_Data/99_MiddleFileStation/08_RailwayDist.pkl")
