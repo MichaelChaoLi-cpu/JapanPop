@@ -228,3 +228,4 @@ bigX.to_pickle("F:/17_Article/01_Data/98_20yearPickles/99_mergedDataset.pkl")
 bigX.to_csv("F:/17_Article/01_Data/98_20yearPickles/99_mergedDataset.csv")
 ##### y
 realPopDf_Y = pd.read_pickle(single_dataset_location + "03_population.pkl")
+realPopDf_Y.to_cvs(single_dataset_location + "03_population.csv")
