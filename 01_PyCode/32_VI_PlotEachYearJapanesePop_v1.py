@@ -48,8 +48,8 @@ def plotPop(year, japan_perfecture, meshGDF, cmap):
     fig = plt.figure(figsize=(11, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year, ax=ax, legend=True, cmap=cmap)
-    plt.title("Japan Population Distribution in 2001", loc = "left")
+    meshGDF.plot(column='X' + year, ax=ax, legend=True, cmap=cmap, vmax = 12000)
+    plt.title("Japan Population Distribution in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
     plt.ylim(25,48)
@@ -60,3 +60,40 @@ def plotPop(year, japan_perfecture, meshGDF, cmap):
 from joblib import Parallel, delayed
 
 Parallel(n_jobs=5)(delayed(plotPop)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+
+
+total_pop_predict_log_wider = total_pop_predict.drop(columns='total_pop').copy()
+total_pop_predict_log_wider = total_pop_predict_wider.pivot(index='G04c_001', 
+                                                        columns='year',
+                                                        values="bigy_pred")
+
+meshGDF = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPolyMesh500m.shp")
+meshGDF.G04c_001.dtype
+meshGDF.G04c_001 = meshGDF.G04c_001.astype('int64')
+meshGDF = meshGDF.set_index("G04c_001")
+
+meshGDF = pd.concat([meshGDF, total_pop_predict_log_wider], axis=1)
+meshGDF = meshGDF.set_crs(epsg = 4326)
+meshGDF.columns = ['geometry',"X2001","X2002",'X2003',
+                   'X2004','X2005', 'X2006','X2007', 'X2008',
+                   'X2009','X2010','X2011', 'X2012', 'X2013',
+                   'X2014','X2015','X2016','X2017', 
+                   'X2018','X2019','X2020']
+
+def plotPopLog(year, japan_perfecture, meshGDF, cmap):
+    year = str(int(year))
+    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    ax = plt.axes()
+    japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
+    meshGDF.plot(column='X' + year, ax=ax, legend=True, cmap=cmap, vmax = 9.5)
+    plt.title("Japan Population Distribution (Logarithm) in "+ year, loc = "left")
+    plt.grid(True)
+    plt.xlim(125, 150)
+    plt.ylim(25,48)
+    plt.show();
+
+    fig.savefig(figure_location + "y"+ year +"_log.jpg")
+    
+from joblib import Parallel, delayed
+
+Parallel(n_jobs=5)(delayed(plotPopLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
