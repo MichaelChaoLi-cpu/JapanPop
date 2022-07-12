@@ -60,5 +60,106 @@ bigy_pred.to_csv(result_location + "SKlearn_1000tree_total_pop_log.csv")
 from joblib import dump
 dump(model, result_location + 'model_1000tree_total_pop_log_allyear.joblib') 
 
+### create log file:
+f = open(result_location + "log.txt", "w")
+f.close()
+
 f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log OOB rate: " + str(model.oob_score_) + "\n")
+f.write("Total Year Total pop log R2 rate: " + str(r2) + "\n")
+f.write("Total Year Total pop log model Location: " + result_location + 'model_1000tree_total_pop_log_allyear.joblib' + "\n")
+f.write("Total Year Total pop log predict result: " + result_location + "SKlearn_1000tree_total_pop_log.csv" + "\n")
+f.close()
+
+# cross validation
+from sklearn.model_selection import train_test_split
+Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,
+                                                random_state=1)
+model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_cv.fit(Xtrain, ytrain)
+ytest_cv = model_cv.predict(Xtest)
+
+from sklearn.metrics import r2_score
+r2_cv = r2_score(ytest, ytest_cv)
+r2_cv
+
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log CV R2 rate: " + str(r2_cv) + "\n")
+f.close()
+
+#### cross year 
+#### except 2005
+X_except2005 = X.query("year != 2005")
+X_except2005.head()
+X_2005 = X.query("year == 2005")
+X_2005.head()
+
+y_except2005 = y.query("year != 2005")
+y_except2005.head()
+y_2005 = y.query("year == 2005")
+y_2005.head()
+
+model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2005.fit(X_except2005, y_except2005)
+
+y_pred2005 = model_except_2005.predict(X_2005)
+r2_cv_2005 = r2_score(y_2005, y_pred2005)
+r2_cv_2005
+
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log CV R2 rate 2005: " + str(r2_cv_2005) + "\n")
+f.close()
+
+model_except_2005.oob_score_
+
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log OOB rate 2005: " + str(model_except_2005.oob_score_) + "\n")
+f.close()
+
+#### except 2010
+X_except2010 = X.query("year != 2010")
+X_except2010.head()
+X_2010 = X.query("year == 2010")
+X_2010.head()
+
+y_except2010 = y.query("year != 2010")
+y_except2010.head()
+y_2010 = y.query("year == 2010")
+y_2010.head()
+
+model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2010.fit(X_except2010, y_except2010)
+
+y_pred2010 = model_except_2010.predict(X_2010)
+r2_cv_2010 = r2_score(y_2010, y_pred2010)
+r2_cv_2010
+model_except_2010.oob_score_
+
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log CV R2 rate 2010: " + str(r2_cv_2010) + "\n")
+f.write("Total Year Total pop log OOB rate 2010: " + str(model_except_2010.oob_score_) + "\n")
+f.close()
+
+#### except 2015
+X_except2015 = X.query("year != 2015")
+X_except2015.head()
+X_2015 = X.query("year == 2015")
+X_2015.head()
+
+y_except2015 = y.query("year != 2015")
+y_except2015.head()
+y_2015 = y.query("year == 2015")
+y_2015.head()
+
+model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2015.fit(X_except2015, y_except2015)
+
+y_pred2015 = model_except_2015.predict(X_2015)
+r2_cv_2015 = r2_score(y_2015, y_pred2010)
+r2_cv_2015
+model_except_2015.oob_score_
+
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log CV R2 rate 2015: " + str(r2_cv_2015) + "\n")
+f.write("Total Year Total pop log OOB rate 2015: " + str(model_except_2015.oob_score_) + "\n")
 f.close()
