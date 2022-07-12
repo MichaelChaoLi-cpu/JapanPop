@@ -11,6 +11,10 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import os
+import glob
+import zipfile
+import geopandas as gpd
+import pandas as pd
 
 aimFolder = "F:\\17_Article\\01_Data\\17_meshData500m"
 os.mkdir(aimFolder + "\\temp")
@@ -51,3 +55,20 @@ while page < 1+8:
     page += 1
     
 driver.quit()
+
+### unzip downloaded files
+fileList = glob.glob(aimFolder + "\\temp" + "\\*.zip")
+for filename in fileList:
+    with zipfile.ZipFile(filename, "r") as zip_ref:
+        zip_ref.extractall(aimFolder + "\\temp")
+
+### read the shapefile         
+shapeFileList = glob.glob(aimFolder + "\\temp" + "\\*.shp")
+gdpFileArray = []
+for shapeFileName in shapeFileList:
+    gdpFile = gpd.read_file(shapeFileName)
+    gdpFileArray.append(gdpFile)
+
+### merge the file into one 2010
+gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
+gdf.to_file(aimFolder + "\\Mesh500.shp")
