@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Download: https://www.e-stat.go.jp/gis/statmap-search?page=1&type=2&aggregateUnitForBoundary=H&coordsys=2&format=shape
+Download: https://www.e-stat.go.jp/gis/statmap-search?page=1&type=2&aggregateUnitForBoundary=Q&coordsys=2&format=shape
 
 Created on Tue Jul 12 09:25:57 2022
 
@@ -16,7 +16,7 @@ import zipfile
 import geopandas as gpd
 import pandas as pd
 
-aimFolder = "F:\\17_Article\\01_Data\\17_meshData500m"
+aimFolder = "F:\\17_Article\\01_Data\\18_meshData250m"
 os.mkdir(aimFolder + "\\temp")
 
 ### change the default path
@@ -27,7 +27,7 @@ chromeOptions.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(ChromeDriverManager(version="102.0.5005.61").install(), \
                           chrome_options = chromeOptions)
 
-locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=2&aggregateUnitForBoundary=H&coordsys=2&format=shape"
+locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=2&aggregateUnitForBoundary=Q&coordsys=2&format=shape"
 driver.get(locationService)
 
 # /html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[4]/div/div/article[1]/div/ul/li[3]/a
@@ -38,7 +38,7 @@ driver.get(locationService)
 # /html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[5]/div/div[1]/span[8]
 
 page = 1
-while page < 1+8:
+while page < 1+9:
     beginIndex = 1
     
     while beginIndex < 1 + 20:
@@ -71,4 +71,4 @@ for shapeFileName in shapeFileList:
 
 ### merge the file into one 2010
 gdf = gpd.GeoDataFrame(pd.concat(gdpFileArray))
-gdf.to_file(aimFolder + "\\Mesh500.shp")
+gdf.to_file(aimFolder + "\\Mesh250m.shp")
