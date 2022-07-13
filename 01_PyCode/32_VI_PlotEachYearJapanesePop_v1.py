@@ -63,7 +63,7 @@ Parallel(n_jobs=5)(delayed(plotPop)(year, japan_perfecture, meshGDF, cmap) for y
 
 
 total_pop_predict_log_wider = total_pop_predict.drop(columns='total_pop').copy()
-total_pop_predict_log_wider = total_pop_predict_wider.pivot(index='G04c_001', 
+total_pop_predict_log_wider = total_pop_predict_log_wider.pivot(index='G04c_001', 
                                                         columns='year',
                                                         values="bigy_pred")
 
