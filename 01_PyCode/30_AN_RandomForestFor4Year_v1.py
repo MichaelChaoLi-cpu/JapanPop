@@ -22,6 +22,7 @@ bigX = pd.read_csv(single_dataset_location + "99_mergedDataset.csv")
 bigX.G04c_001 = bigX.G04c_001.astype("int32")
 bigX.year = bigX.year.astype("int32")
 bigX = bigX.set_index(['G04c_001', 'year'])
+bigX = bigX.fillna(0)
 
 ##### y
 realPopDf_Y = pd.read_csv(single_dataset_location + "03_population.csv")
@@ -168,6 +169,7 @@ r2 = r2_score(y, y_pred)
 r2
 
 bigy_pred = model.predict(bigX)
+bigX_to_pred = bigX.copy()
 bigX_to_pred['bigy_pred'] = bigy_pred
 bigy_pred = bigX_to_pred[['bigy_pred']].copy()
 bigy_pred.head()
@@ -265,6 +267,7 @@ r2 = r2_score(y, y_pred)
 r2
 
 bigy_pred = model.predict(bigX)
+bigX_to_pred = bigX.copy()
 bigX_to_pred['bigy_pred'] = bigy_pred
 bigy_pred = bigX_to_pred[['bigy_pred']].copy()
 bigy_pred.head()
