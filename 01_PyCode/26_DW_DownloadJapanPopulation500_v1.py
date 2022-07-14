@@ -62,3 +62,39 @@ while page < 1+8:
     page += 1
     
 driver.quit()
+
+
+### 1km
+aimFolder = "F:\\17_Article\\01_Data\\09_populationMesh\\250m"
+os.mkdir(aimFolder)
+os.mkdir(aimFolder + "\\2015")
+
+### change the default path
+chromeOptions = webdriver.ChromeOptions()
+prefs = {"download.default_directory" : aimFolder + "\\2015"}
+chromeOptions.add_experimental_option("prefs",prefs)
+
+driver = webdriver.Chrome(ChromeDriverManager(version="102.0.5005.61").install(), \
+                          chrome_options = chromeOptions)
+    
+locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=Q&serveyId=Q002005112015&statsId=T000876"
+driver.get(locationService)
+
+page = 1
+while page < 1+8:
+    beginIndex = 1
+    
+    while beginIndex < 1 + 20:
+        try:
+            driver.find_element_by_xpath("/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[4]/div/div/article[" + str(beginIndex) + "]/div/ul/li[4]/a").click()
+            time.sleep(3)
+        except:
+            print(page, beginIndex)
+        
+        beginIndex += 1
+        
+    driver.find_element_by_xpath("/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[5]/div/div[1]/span[8]").click()
+    time.sleep(5)
+    page += 1
+    
+driver.quit()

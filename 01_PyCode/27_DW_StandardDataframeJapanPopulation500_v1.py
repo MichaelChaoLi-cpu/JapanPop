@@ -11,6 +11,7 @@ import glob
 import pandas as pd
 import numpy as np
 import os
+import 
 
 aimFolder = "F:\\17_Article\\01_Data\\09_populationMesh\\500m"
 
@@ -74,3 +75,7 @@ df_2015 = mergeTableToStandardDF2015(2015, aimFolder)
 
 popDf = pd.concat([df_2000, df_2005, df_2010, df_2015], axis=0)
 popDf.to_pickle("F:/17_Article/01_Data/98_20yearPickles/03_population.pkl")
+
+aimFolder = "F:\\17_Article\\01_Data\\09_populationMesh\\250m"
+df_2015_250 = mergeTableToStandardDF2015(2015, aimFolder)
+#### since the focus on high density region, it is not enough to estimate.
