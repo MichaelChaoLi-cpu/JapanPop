@@ -228,4 +228,5 @@ def plotPopFemaleLog(year, japan_perfecture, meshGDF, cmap):
     
 Parallel(n_jobs=7)(delayed(plotPopFemaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
+meshGDF = meshGDF.rename(columns={'G04c_001':"meshID"})
 meshGDF.to_file(result_folder + "GDF_2001_2020_500mesh_total_male_female.v1.shp")
