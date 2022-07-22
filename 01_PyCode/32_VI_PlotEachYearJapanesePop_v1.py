@@ -47,10 +47,10 @@ figure_location = "C:\\Users\\li.chao.987@s.kyushu-u.ac.jp\\OneDrive - Kyushu Un
 
 def plotPop(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year, ax=ax, legend=True, cmap=cmap, vmax = 1000)
+    meshGDF.plot(column='X' + year, ax=ax, legend=True, cmap=cmap, vmax = 1000, vmin = 0)
     plt.title("Japan Population Distribution in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
@@ -59,7 +59,7 @@ def plotPop(year, japan_perfecture, meshGDF, cmap):
 
     fig.savefig(figure_location + "y"+ year +".jpg")
 
-Parallel(n_jobs=5)(delayed(plotPop)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+Parallel(n_jobs=7)(delayed(plotPop)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 
 total_pop_predict_log_wider = total_pop_predict.drop(columns='total_pop').copy()
@@ -85,10 +85,10 @@ meshGDF = pd.concat([meshGDF, total_pop_predict_log_wider], axis=1)
 
 def plotPopLog(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5)
+    meshGDF.plot(column='X' + year + "_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5, vmin = 0)
     plt.title("Japan Population Distribution (Logarithm) in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
@@ -98,7 +98,7 @@ def plotPopLog(year, japan_perfecture, meshGDF, cmap):
     fig.savefig(figure_location + "y"+ year +"_log.jpg")
 
 
-Parallel(n_jobs=5)(delayed(plotPopLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+Parallel(n_jobs=7)(delayed(plotPopLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 ### male
 male_pop_predict = pd.read_csv(result_folder + "SKlearn_1000tree_male_pop_log.csv")
@@ -122,10 +122,10 @@ meshGDF = pd.concat([meshGDF, male_pop_predict_wider], axis=1)
 
 def plotPopMale(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_male", ax=ax, legend=True, cmap=cmap, vmax = 1000)
+    meshGDF.plot(column='X' + year + "_male", ax=ax, legend=True, cmap=cmap, vmax = 1000, vmin = 0)
     plt.title("Japan Male Population Distribution in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
@@ -150,10 +150,10 @@ male_pop_predict_log_wider.columns = ["X2001_male_log","X2002_male_log",'X2003_m
 meshGDF = pd.concat([meshGDF, male_pop_predict_log_wider], axis=1)
 def plotPopMaleLog(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_male_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5)
+    meshGDF.plot(column='X' + year + "_male_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5, vmin = 0)
     plt.title("Japan Male Population Distribution (Logarithm) in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
@@ -162,7 +162,7 @@ def plotPopMaleLog(year, japan_perfecture, meshGDF, cmap):
 
     fig.savefig(figure_location + "y"+ year +"_male_log.jpg")
     
-Parallel(n_jobs=10)(delayed(plotPopMaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+Parallel(n_jobs=7)(delayed(plotPopMaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 ### female
 female_pop_predict = pd.read_csv(result_folder + "SKlearn_1000tree_female_pop_log.csv")
@@ -186,10 +186,10 @@ meshGDF = pd.concat([meshGDF, female_pop_predict_wider], axis=1)
 
 def plotPopFemale(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_female", ax=ax, legend=True, cmap=cmap, vmax = 1000)
+    meshGDF.plot(column='X' + year + "_female", ax=ax, legend=True, cmap=cmap, vmax = 1000, vmin = 0)
     plt.title("Japan Female Population Distribution in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
@@ -214,10 +214,10 @@ female_pop_predict_log_wider.columns = ["X2001_female_log","X2002_female_log",'X
 meshGDF = pd.concat([meshGDF, female_pop_predict_log_wider], axis=1)
 def plotPopFemaleLog(year, japan_perfecture, meshGDF, cmap):
     year = str(int(year))
-    fig = plt.figure(figsize=(11, 8), dpi=1000)
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
     ax = plt.axes()
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_female_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5)
+    meshGDF.plot(column='X' + year + "_female_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5, vmin = 0)
     plt.title("Japan Female Population Distribution (Logarithm) in "+ year, loc = "left")
     plt.grid(True)
     plt.xlim(125, 150)
