@@ -104,7 +104,8 @@ model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2005.fit(X_except2005, y_except2005)
 y_pred2005 = model_except_2005.predict(X_2005)
 r2_cv_2005 = r2_score(y_2005, y_pred2005)
-DF_cv_2005 = pd.concat([y_2005, y_pred2005])
+DF_cv_2005 = y_2005.copy()
+DF_cv_2005['y_pred2005'] = y_pred2005
 DF_cv_2005.to_csv(result_location + "SKlearn_1000tree_total_DF_cv_2005.csv")
 r2_cv_2005
 f = open(result_location + "log.txt", "a")
@@ -128,7 +129,8 @@ model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2010.fit(X_except2010, y_except2010)
 y_pred2010 = model_except_2010.predict(X_2010)
 r2_cv_2010 = r2_score(y_2010, y_pred2010)
-DF_cv_2010 = pd.concat([y_2010, y_pred2010])
+DF_cv_2010 = y_2010.copy()
+DF_cv_2010['y_pred2010'] = y_pred2010
 DF_cv_2010.to_csv(result_location + "SKlearn_1000tree_total_DF_cv_2010.csv")
 r2_cv_2010
 model_except_2010.oob_score_
@@ -150,7 +152,8 @@ model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2015.fit(X_except2015, y_except2015)
 y_pred2015 = model_except_2015.predict(X_2015)
 r2_cv_2015 = r2_score(y_2015, y_pred2015)
-DF_cv_2015 = pd.concat([y_2015, y_pred2015])
+DF_cv_2015 = y_2015.copy()
+DF_cv_2015['y_pred2015'] = y_pred2015
 DF_cv_2015.to_csv(result_location + "SKlearn_1000tree_total_DF_cv_2015.csv")
 r2_cv_2015
 model_except_2015.oob_score_
@@ -218,7 +221,8 @@ model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2005.fit(X_except2005, y_except2005)
 y_pred2005 = model_except_2005.predict(X_2005)
 r2_cv_2005 = r2_score(y_2005, y_pred2005)
-DF_cv_2005 = pd.concat([y_2005, y_pred2005])
+DF_cv_2005 = y_2005.copy()
+DF_cv_2005['y_pred2005'] = y_pred2005
 DF_cv_2005.to_csv(result_location + "SKlearn_1000tree_male_DF_cv_2005.csv")
 r2_cv_2005
 model_except_2005.oob_score_
@@ -236,7 +240,8 @@ model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2010.fit(X_except2010, y_except2010)
 y_pred2010 = model_except_2010.predict(X_2010)
 r2_cv_2010 = r2_score(y_2010, y_pred2010)
-DF_cv_2010 = pd.concat([y_2010, y_pred2010])
+DF_cv_2010 = y_2010.copy()
+DF_cv_2010['y_pred2010'] = y_pred2010
 DF_cv_2010.to_csv(result_location + "SKlearn_1000tree_male_DF_cv_2010.csv")
 r2_cv_2010
 model_except_2010.oob_score_
@@ -254,7 +259,8 @@ model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2015.fit(X_except2015, y_except2015)
 y_pred2015 = model_except_2015.predict(X_2015)
 r2_cv_2015 = r2_score(y_2015, y_pred2015)
-DF_cv_2015 = pd.concat([y_2015, y_pred2015])
+DF_cv_2015 = y_2015.copy()
+DF_cv_2015['y_pred2015'] = y_pred2015
 DF_cv_2015.to_csv(result_location + "SKlearn_1000tree_male_DF_cv_2015.csv")
 r2_cv_2015
 model_except_2015.oob_score_
@@ -322,7 +328,8 @@ model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2005.fit(X_except2005, y_except2005)
 y_pred2005 = model_except_2005.predict(X_2005)
 r2_cv_2005 = r2_score(y_2005, y_pred2005)
-DF_cv_2005 = pd.concat([y_2005, y_pred2005])
+DF_cv_2005 = y_2005.copy()
+DF_cv_2005['y_pred2005'] = y_pred2005
 DF_cv_2005.to_csv(result_location + "SKlearn_1000tree_female_DF_cv_2005.csv")
 r2_cv_2005
 model_except_2005.oob_score_
@@ -340,7 +347,8 @@ model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2010.fit(X_except2010, y_except2010)
 y_pred2010 = model_except_2010.predict(X_2010)
 r2_cv_2010 = r2_score(y_2010, y_pred2010)
-DF_cv_2010 = pd.concat([y_2010, y_pred2010])
+DF_cv_2010 = y_2010.copy()
+DF_cv_2010['y_pred2010'] = y_pred2010
 DF_cv_2010.to_csv(result_location + "SKlearn_1000tree_female_DF_cv_2010.csv")
 r2_cv_2010
 model_except_2010.oob_score_
@@ -358,7 +366,8 @@ model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, ran
 model_except_2015.fit(X_except2015, y_except2015)
 y_pred2015 = model_except_2015.predict(X_2015)
 r2_cv_2015 = r2_score(y_2015, y_pred2015)
-DF_cv_2015 = pd.concat([y_2015, y_pred2015])
+DF_cv_2015 = y_2015.copy()
+DF_cv_2015['y_pred2015'] = y_pred2015
 DF_cv_2015.to_csv(result_location + "SKlearn_1000tree_female_DF_cv_2015.csv")
 r2_cv_2015
 model_except_2015.oob_score_
