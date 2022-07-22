@@ -21,3 +21,14 @@ time, we set this ISG.
 1. the resolutions should be 0.004 or 0.004*n.    
 2. the projection should be WGS84.     
 3. the raw data from NASA should be using naive projection.
+
+## Results:  
+### Total Population Distribution (2001 - 2020):
+![](05_Figure/zzz_total_log.gif)
+   
+### Male Population Distribution (2001 - 2020):
+![](05_Figure/zzz_male_log.gif)
+   
+### Female Population Distribution (2001 - 2020):
+![](05_Figure/zzz_female_log.gif)
+   
