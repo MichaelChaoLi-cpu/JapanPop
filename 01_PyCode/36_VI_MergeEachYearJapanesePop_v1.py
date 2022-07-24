@@ -56,11 +56,15 @@ while i < 20:
     ax = ax_list[i]
     year = str(2001 + i)
     japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.1)
-    meshGDF.plot(column='X' + year + "_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5, vmin = 0)
-    ax.set_title("Japan Population Distribution (Logarithm) in "+ year, loc = "left")
+    meshGDF.plot(column='X' + year + "_log", ax=ax, legend=False, cmap=cmap, vmax = 9.5, vmin = 0)
+    ax.set_title("Japan Population Distribution (Logarithm) in "+ year, loc = "left", fontsize=20)
     ax.grid(True)
+    ax.set_xticklabels(fontsize=16)
+    ax.set_yticklabels(fontsize=16)
     ax.set_xlim([125, 150])
     ax.set_ylim([25,48])
     
     i = i + 1
-plt.show();
+#plt.show();
+
+fig.savefig(figure_location + "merged_total_log.jpg")

@@ -65,7 +65,8 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
-    r, pvalue = pearsonr(np.array(y), np.array(y_pred))
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
     reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
     reg.coef_
     reg.intercept_
@@ -75,7 +76,8 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
     mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
     rmse_count = np.sqrt(mse_count)
-    r_count, pvalue_count = pearsonr(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
     reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
     reg_count.coef_
     reg_count.intercept_
@@ -86,15 +88,15 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
     f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
     f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
     f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
     f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
     f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
@@ -113,7 +115,8 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
-    r, pvalue = pearsonr(np.array(y), np.array(y_pred))
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
     reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
     reg.coef_
     reg.intercept_
@@ -123,7 +126,8 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
     mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
     rmse_count = np.sqrt(mse_count)
-    r_count, pvalue_count = pearsonr(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
     reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
     reg_count.coef_
     reg_count.intercept_
@@ -133,15 +137,15 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
     f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
     f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
     f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
     f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
     f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
@@ -159,16 +163,16 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     df_merged.shape
     X = df_merged.iloc[:, 1:54]
     X = X.fillna(0)
-    y = df_merged.iloc[:, 0:1]
+    y_raw = df_merged.iloc[:, 0:1]
     #### cross year 
     #### except 2005
     X_except2005 = X.query("year != 2005")
     X_except2005.head()
     X_2005 = X.query("year == 2005")
     X_2005.head()
-    y_except2005 = y.query("year != 2005")
+    y_except2005 = y_raw.query("year != 2005")
     y_except2005.head()
-    y_2005 = y.query("year == 2005")
+    y_2005 = y_raw.query("year == 2005")
     y_2005.head()
     model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2005.fit(X_except2005, y_except2005)
@@ -181,7 +185,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
-    r, pvalue = pearsonr(np.array(y), np.array(y_pred))
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
     reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
     reg.coef_
     reg.intercept_
@@ -191,7 +196,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
     mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
     rmse_count = np.sqrt(mse_count)
-    r_count, pvalue_count = pearsonr(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
     reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
     reg_count.coef_
     reg_count.intercept_
@@ -201,15 +207,15 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
     f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
     f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
     f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
     f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
     f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
@@ -219,9 +225,9 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     X_except2010.head()
     X_2010 = X.query("year == 2010")
     X_2010.head()
-    y_except2010 = y.query("year != 2010")
+    y_except2010 = y_raw.query("year != 2010")
     y_except2010.head()
-    y_2010 = y.query("year == 2010")
+    y_2010 = y_raw.query("year == 2010")
     y_2010.head()
     model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2010.fit(X_except2010, y_except2010)
@@ -229,12 +235,13 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     
     y_pred = y_pred2010
     y = y_2010
-    r2 = r2_score(y, y_pred)
-    r2
+    #r2 = r2_score(y, y_pred)
+    #r2
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
-    r, pvalue = pearsonr(np.array(y), np.array(y_pred))
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
     reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
     reg.coef_
     reg.intercept_
@@ -244,7 +251,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
     mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
     rmse_count = np.sqrt(mse_count)
-    r_count, pvalue_count = pearsonr(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
     reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
     reg_count.coef_
     reg_count.intercept_
@@ -254,15 +262,15 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
     f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
     f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
     f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
     f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
     f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
@@ -272,9 +280,9 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     X_except2015.head()
     X_2015 = X.query("year == 2015")
     X_2015.head()
-    y_except2015 = y.query("year != 2015")
+    y_except2015 = y_raw.query("year != 2015")
     y_except2015.head()
-    y_2015 = y.query("year == 2015")
+    y_2015 = y_raw.query("year == 2015")
     y_2015.head()
     model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2015.fit(X_except2015, y_except2015)
@@ -287,7 +295,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
-    r, pvalue = pearsonr(np.array(y), np.array(y_pred))
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
     reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
     reg.coef_
     reg.intercept_
@@ -297,7 +306,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
     mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
     rmse_count = np.sqrt(mse_count)
-    r_count, pvalue_count = pearsonr(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
     reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
     reg_count.coef_
     reg_count.intercept_
@@ -307,15 +317,15 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
     f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
     f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
     f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
     f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
     f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
