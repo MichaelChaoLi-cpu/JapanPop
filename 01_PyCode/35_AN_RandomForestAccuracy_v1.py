@@ -235,8 +235,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     
     y_pred = y_pred2010
     y = y_2010
-    #r2 = r2_score(y, y_pred)
-    #r2
+    r2 = r2_score(y, y_pred)
+    r2
     mae = mean_absolute_error(y, y_pred)
     mse = mean_squared_error(y, y_pred)
     rmse = np.sqrt(mse)
