@@ -220,21 +220,28 @@ c = hist[xidx, yidx]
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.FemalePop_log), fittingModelResultDf.FemalePop_log_pred)
 reg.coef_
 reg.intercept_
-fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(20, 10), dpi=1000)
-ax1.scatter(fittingModelResultDf.FemalePop_log, fittingModelResultDf.FemalePop_log_pred, 
-            c=c, cmap='jet')
-ax1.axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
+fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(20, 10.5), dpi=1000,
+                        gridspec_kw={'height_ratios': [10, 0.5]})
+axs[0,0].scatter(fittingModelResultDf.FemalePop_log, fittingModelResultDf.FemalePop_log_pred, 
+            c=c, cmap=cmap)
+axs[0,0].axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
            label='y = x')
-ax1.axline((0, reg.intercept_), (10, (reg.intercept_ + 10 * reg.coef_[0])), 
+axs[0,0].axline((0, reg.intercept_), (10, (reg.intercept_ + 10 * reg.coef_[0])), 
            linewidth=6, color='blue', alpha=0.4, linestyle='--',
            label='y = ' + str(round(reg.coef_[0], 2))+"x + " + str(round(reg.intercept_, 2)))
-ax1.grid(True)
-ax1.legend()
-ax1.text(9, 9.7, "a", fontsize=20)
-ax1.set_xlabel("Logarithm of the Observed Female Population", fontsize=15)
-ax1.set_ylabel("Logarithm of the Predicted Female Population", fontsize=15)
-ax1.set_xlim([0, 10])
-ax1.set_ylim([0, 10])
+axs[0,0].grid(True)
+axs[0,0].legend()
+axs[0,0].text(9, 9.7, "a", fontsize=20)
+axs[0,0].set_xlabel("Logarithm of the Observed Female Population", fontsize=15)
+axs[0,0].set_ylabel("Logarithm of the Predicted Female Population", fontsize=15)
+axs[0,0].set_xlim([0, 10])
+axs[0,0].set_ylim([0, 10])
+
+norm = mpl.colors.Normalize(vmin=np.min(c), vmax=np.max(c))
+cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
+                    cax=axs[1,0], orientation='horizontal')
+cbar.set_label('Density',size=24)
+cbar.ax.tick_params(labelsize=18) 
 
 xedges, yedges = np.linspace(0, 7000, 41), np.linspace(0, 7000, 41)
 hist, xedges, yedges = np.histogram2d(fittingModelResultDf.FemalePop, 
@@ -249,21 +256,27 @@ reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.FemalePop), fitti
 reg.coef_
 reg.intercept_
 
-ax2.scatter(fittingModelResultDf.FemalePop, fittingModelResultDf.FemalePop_pred, 
-            c=c, cmap='jet')
-ax2.axline((0, 0), (7000, 7000), linewidth=6, color='r', alpha=0.4, linestyle='--',
+axs[0,1].scatter(fittingModelResultDf.FemalePop, fittingModelResultDf.FemalePop_pred, 
+            c=c, cmap=cmap)
+axs[0,1].axline((0, 0), (7000, 7000), linewidth=6, color='r', alpha=0.4, linestyle='--',
            label='y = x')
-ax2.axline((0, reg.intercept_), (7000, (reg.intercept_ + 7000 * reg.coef_[0])), 
+axs[0,1].axline((0, reg.intercept_), (7000, (reg.intercept_ + 7000 * reg.coef_[0])), 
            linewidth=6, color='blue', alpha=0.4, linestyle='--',
            label='y = ' + str(round(reg.coef_[0], 2))+"x + " + str(round(reg.intercept_, 2)))
-ax2.grid(True)
-ax2.legend()
-ax2.text(6500, 6800, "b", fontsize=20)
-ax2.set_xlabel("the Observed Female Population", fontsize=15)
-ax2.set_ylabel("the Predicted Female Population", fontsize=15)
-ax2.set_xlim([0, 7000])
-ax2.set_ylim([0, 7000])
+axs[0,1].grid(True)
+axs[0,1].legend()
+axs[0,1].text(6500, 6800, "b", fontsize=20)
+axs[0,1].set_xlabel("the Observed Female Population", fontsize=15)
+axs[0,1].set_ylabel("the Predicted Female Population", fontsize=15)
+axs[0,1].set_xlim([0, 7000])
+axs[0,1].set_ylim([0, 7000])
 
-plt.show();
+norm = mpl.colors.Normalize(vmin=np.min(c), vmax=np.max(c))
+cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
+                    cax=axs[1,1], orientation='horizontal')
+cbar.set_label('Density',size=24)
+cbar.ax.tick_params(labelsize=18) 
+
+#plt.show();
 
 fig.savefig(figure_location + "fittingModel_female.jpg")
