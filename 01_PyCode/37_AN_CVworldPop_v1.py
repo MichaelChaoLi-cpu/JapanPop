@@ -15,6 +15,7 @@ from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 
 coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPointMesh500m.shp")
+coords_extration.set_crs(4326)
 
 raster2005 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2005_1km_UNadj.tif"
 raster2010 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2010_1km_UNadj.tif"
@@ -91,4 +92,5 @@ print(rmse)
 reg = LinearRegression().fit(pd.DataFrame(testDf.TotalPop), np.array(testDf.WorldPopCount))
 print(reg.coef_)
 print(reg.intercept_)
+print(np.mean(testDf.TotalPop))
 

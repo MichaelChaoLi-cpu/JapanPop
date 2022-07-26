@@ -1,4 +1,4 @@
-.# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 #NOTE: this script only works on HPC
 
