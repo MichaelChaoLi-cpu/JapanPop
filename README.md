@@ -6,9 +6,6 @@ Gridded datasets for Japanese total, male, and female population over 2001-2020
   
 ## Author  
 Chao Li, Shunsuke Managi  
-  
-## Projection and Resolution
-Projection: WGS84; Spatial Resolution: 500m; Temporal Resolution:  yearly
 
 ## Results:  
 ### Animation of Total Population Distribution (2001 - 2020):
@@ -21,13 +18,13 @@ Projection: WGS84; Spatial Resolution: 500m; Temporal Resolution:  yearly
 ![](05_Figure/zzz_female_log.gif)
   
 ### Total Population Distribution (2001 - 2020):
-![](05_Figure/merged_total_log.gif)
+![](05_Figure/merged_total_log.jpg)
    
 ### Male Population Distribution (2001 - 2020):
-![](05_Figure/male_total_log.gif)
+![](05_Figure/merged_male_log.jpg)
    
 ### Female Population Distribution (2001 - 2020):
-![](05_Figure/female_total_log.gif)
+![](05_Figure/merged_female_log.jpg)
    
 ## Manuscript
 [Gridded datasets for Japanese total, male, and female population over 2001-2020](07_Manuscript/DP17_manu.pdf)  
@@ -42,12 +39,12 @@ id and time stamp are named as ['G04c_001', 'year'].
 [24_DW_DownloadMergeJapanMesh500_v1.py](01_PyCode/24_DW_DownloadMergeJapanMesh500_v1.py): This script is to 
 build 500m mesh base datasets, including a *point shapefile* and polygon shapefile. 
    
-### Output Variables (in total 3)
+### Output Variables (in total 3 Output Variables)
 [26_DW_DownloadJapanPopulation500_v1.py](01_PyCode/26_DW_DownloadJapanPopulation500_v1.py): This script is 
 to download population data from Japan government <https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=Q&serveyId=Q002005112015&statsId=T000876>.  
 [27_DW_StandardDataframeJapanPopulation500_v1.py](01_PyCode/27_DW_StandardDataframeJapanPopulation500_v1.py): This script is to obtain output variables, total, male, and female population counts in 2005, 2010, and 2015.  
   
-### Features (in total 53)
+### Features (in total 53 Features)
 [01_DW_MCD12Q1LandCover500m_v1.py](01_PyCode/01_DW_MCD12Q1LandCover500m_v1.py): This script is to convert 
 the hdf files from NASA MCD12Q1 in to GTiff, which is yearly land cover dataset.   
 [02_DW_MergeLandCover500m_v1.py](01_PyCode/02_DW_MergeLandCover500m_v1.py): This script is to merge the 
@@ -77,6 +74,12 @@ office, and disable supporter. In this script: 8 features are obtained.
 ## Workflows:
 The scripts are organized in this order:  
 **24 -> 26-> 27-> 01 -> 02 -> 23 -> 25 -> 28 -> 18 -> 15 -> 16 -> 17 -> 20 -> 29 -> 30 -> 32 ->33 -> 34 -> 35 -> 36 -> 37 -> 38**  
+  
+## Data Archieve
+**Forthcoming**  
+  
+## Projection and Resolution
+Projection: WGS84; Spatial Resolution: 500m; Temporal Resolution:  yearly
    
 ## Contact Us:
 - Email: Prof. Shunsuke Managi <managi@doc.kyushu-u.ac.jp>  
