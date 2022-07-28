@@ -25,7 +25,7 @@ chromeOptions.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(ChromeDriverManager(version="102.0.5005.61").install(), \
                           chrome_options = chromeOptions)
 
-locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=H&serveyId=H002005112015&statsId=T000847"
+locationService = "https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2020&aggregateUnit=H&serveyId=H002005112020&statsId=T001101"
 driver.get(locationService)
 
 # 2000
@@ -36,6 +36,8 @@ driver.get(locationService)
 # https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2010&aggregateUnit=H&serveyId=H002005112010&statsId=T000609
 # 2015
 # https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2015&aggregateUnit=H&serveyId=H002005112015&statsId=T000847
+# 2020
+# https://www.e-stat.go.jp/gis/statmap-search?page=1&type=1&toukeiCode=00200521&toukeiYear=2020&aggregateUnit=H&serveyId=H002005112020&statsId=T001101
 
 #/html/body/div[1]/div/main/div[2]/section/div[2]/main/section/div[4]/div/div/article[1]/div/ul/li[4]/a
 #
@@ -64,7 +66,7 @@ while page < 1+8:
 driver.quit()
 
 
-### 1km
+### 250m
 aimFolder = "F:\\17_Article\\01_Data\\09_populationMesh\\250m"
 os.mkdir(aimFolder)
 os.mkdir(aimFolder + "\\2015")
