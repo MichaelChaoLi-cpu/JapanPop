@@ -223,9 +223,35 @@ del distRailwayStation2005, distRailwayStation2008, distRailwayStation2011
 bigX.roadLength = bigX.roadLength.fillna(0)
 bigX.to_pickle("F:/17_Article/01_Data/98_20yearPickles/99_mergedDataset.pkl")
 
+### add X and Y
+### extraction
+coords_extration = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPointMesh500m.shp")
+coords_extration["lon"] = coords_extration.centroid.x
+coords_extration["lat"] = coords_extration.centroid.y
+pointLonLat = pd.DataFrame(coords_extration[['G04c_001', 'lon', 'lat']])
+pointLonLat['year'] = 2006
+pointLonLat = pointLonLat.set_index(['G04c_001', 'year'])
+pointLonLatAll = pd.concat([
+    pointLonLat.rename(index={2006:2001}), pointLonLat.rename(index={2006:2002}),
+    pointLonLat.rename(index={2006:2003}), pointLonLat.rename(index={2006:2004}),
+    pointLonLat.rename(index={2006:2005}), pointLonLat.rename(index={2006:2006}),
+    pointLonLat.rename(index={2006:2007}), pointLonLat.rename(index={2006:2008}),
+    pointLonLat.rename(index={2006:2009}), pointLonLat.rename(index={2006:2010}),
+    pointLonLat.rename(index={2006:2011}), pointLonLat.rename(index={2006:2012}),
+    pointLonLat.rename(index={2006:2013}), pointLonLat.rename(index={2006:2014}),
+    pointLonLat.rename(index={2006:2015}), pointLonLat.rename(index={2006:2016}),
+    pointLonLat.rename(index={2006:2017}), pointLonLat.rename(index={2006:2018}),
+    pointLonLat.rename(index={2006:2019}), pointLonLat.rename(index={2006:2020})
+                                 ])
+
+pointLonLatAll.to_pickle("F:/17_Article/01_Data/98_20yearPickles/98_pointLonLatALL.pkl")
+pointLonLatAll.to_csv("F:/17_Article/01_Data/98_20yearPickles/98_pointLonLatALL.csv")
+#bigX = pd.read_pickle("F:/17_Article/01_Data/98_20yearPickles/99_mergedDataset.pkl")
+#bigX = pd.concat([bigX, pointLonLatAll], axis=1)
+
 #### make csv to supercomputer
 #####
 bigX.to_csv("F:/17_Article/01_Data/98_20yearPickles/99_mergedDataset.csv")
 ##### y
 realPopDf_Y = pd.read_pickle(single_dataset_location + "03_population.pkl")
-realPopDf_Y.to_cvs(single_dataset_location + "03_population.csv")
+realPopDf_Y.to_csv(single_dataset_location + "03_population.csv")

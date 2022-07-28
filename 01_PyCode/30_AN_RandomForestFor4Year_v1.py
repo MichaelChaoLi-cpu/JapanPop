@@ -26,6 +26,9 @@ bigX.year = bigX.year.astype("int32")
 bigX = bigX.set_index(['G04c_001', 'year'])
 bigX = bigX.fillna(0)
 
+pointLonLatAll = pd.read_csv(single_dataset_location + "98_pointLonLatALL.csv")
+bigX = pd.concat([bigX, pointLonLatAll], axis=1)
+
 ##### y
 realPopDf_Y = pd.read_csv(single_dataset_location + "03_population.csv")
 realPopDf_Y.G04c_001 = realPopDf_Y.G04c_001.astype("int32")
