@@ -27,6 +27,9 @@ bigX = bigX.set_index(['G04c_001', 'year'])
 bigX = bigX.fillna(0)
 
 pointLonLatAll = pd.read_csv(single_dataset_location + "98_pointLonLatALL.csv")
+pointLonLatAll.G04c_001 = pointLonLatAll.G04c_001.astype("int32")
+pointLonLatAll.year = pointLonLatAll.year.astype("int32")
+pointLonLatAll = pointLonLatAll.set_index(['G04c_001', 'year'])
 bigX = pd.concat([bigX, pointLonLatAll], axis=1)
 
 ##### y
@@ -41,12 +44,15 @@ realPopDf_Y = realPopDf_Y.set_index(['G04c_001', 'year'])
 ##### total population
 y=realPopDf_Y[['TotalPopLog']]
 
-df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
+df_merged = pd.concat([y, bigX], axis=1)
+df_merged.shape
+df_merged = df_merged.fillna(0)
+df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
 df_merged.shape
 
 df_merged = df_merged.dropna()
 df_merged.shape
-X = df_merged.iloc[:, 1:54]
+X = df_merged.iloc[:, 1:56]
 X = X.fillna(0)
 y = df_merged.iloc[:, 0:1]
 
