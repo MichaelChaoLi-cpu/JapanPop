@@ -99,6 +99,10 @@ f = open(result_location + "log.txt", "a")
 f.write("Total Year Total pop log CV R2 rate: " + str(r2_cv) + "\n")
 f.close()
 
+DF_cv_3_7 = ytest.copy()
+DF_cv_3_7['y_pred'] = ytest_cv
+DF_cv_3_7.to_csv(result_location + "SKlearn_1000tree_total_DF_cv_3_7.csv")
+
 #### cross year 
 #### except 2005
 X_except2005 = X.query("year != 2005")
@@ -169,6 +173,29 @@ model_except_2015.oob_score_
 f = open(result_location + "log.txt", "a")
 f.write("Total Year Total pop log CV R2 rate 2015: " + str(r2_cv_2015) + "\n")
 f.write("Total Year Total pop log OOB rate 2015: " + str(model_except_2015.oob_score_) + "\n")
+f.close()
+
+#### except 2020
+X_except2020 = X.query("year != 2020")
+X_except2020.head()
+X_2020 = X.query("year == 2020")
+X_2020.head()
+y_except2020 = y.query("year != 2020")
+y_except2020.head()
+y_2020 = y.query("year == 2020")
+y_2020.head()
+model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2020.fit(X_except2020, y_except2020)
+y_pred2020 = model_except_2020.predict(X_2020)
+r2_cv_2020 = r2_score(y_2020, y_pred2020)
+DF_cv_2020 = y_2020.copy()
+DF_cv_2020['y_pred2020'] = y_pred2020
+DF_cv_2020.to_csv(result_location + "SKlearn_1000tree_total_DF_cv_2020.csv")
+r2_cv_2020
+model_except_2020.oob_score_
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Total pop log CV R2 rate 2020: " + str(r2_cv_2020) + "\n")
+f.write("Total Year Total pop log OOB rate 2020: " + str(model_except_2020.oob_score_) + "\n")
 f.close()
 
 ##### male population

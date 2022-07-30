@@ -95,6 +95,15 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
+    bigX_to_pred = bigX.copy()
+    bigy_pred = model.predict(bigX_to_pred)
+    bigX_to_pred['bigy_pred'] = bigy_pred
+    bigy_pred = bigX_to_pred[['bigy_pred']].copy()
+    bigy_pred.head()
+
+    bigy_pred.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_pop_log.csv")
+    dump(model, result_location + "model_1000tree_" + selectVariable + "_pop_log_allyear.joblib") 
+    
     f = open(result_location + "log_indicators.txt", "a")
     f.write(aimGroup + "pop log ####\n")
     f.write("Total Year " + aimGroup + " pop log OOB rate: " + str(model.oob_score_) + "\n")
@@ -122,6 +131,10 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_cv.fit(Xtrain, ytrain)
     ytest_cv = model_cv.predict(Xtest)
+    
+    DF_cv_3_7 = ytest.copy()
+    DF_cv_3_7['y_pred'] = ytest_cv
+    DF_cv_3_7.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_3_7.csv")
     
     y = ytest
     y_pred = ytest_cv
@@ -196,6 +209,10 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2005.fit(X_except2005, y_except2005)
     y_pred2005 = model_except_2005.predict(X_2005)
     
+    DF_cv_2005 = y_2005.copy()
+    DF_cv_2005['y_pred2005'] = y_pred2005
+    DF_cv_2005.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2005.csv")
+    
     y_pred = y_pred2005
     y = y_2005
     r2 = r2_score(y, y_pred)
@@ -256,6 +273,10 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_except_2010.fit(X_except2010, y_except2010)
     y_pred2010 = model_except_2010.predict(X_2010)
+    
+    DF_cv_2010 = y_2010.copy()
+    DF_cv_2010['y_pred2010'] = y_pred2010
+    DF_cv_2010.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2010.csv")
     
     y_pred = y_pred2010
     y = y_2010
@@ -318,6 +339,10 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2015.fit(X_except2015, y_except2015)
     y_pred2015 = model_except_2015.predict(X_2015)
     
+    DF_cv_2015 = y_2015.copy()
+    DF_cv_2015['y_pred2015'] = y_pred2015
+    DF_cv_2015.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2015.csv")
+    
     y_pred = y_pred2015
     y = y_2015
     r2 = r2_score(y, y_pred)
@@ -378,6 +403,10 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_except_2020.fit(X_except2020, y_except2020)
     y_pred2020 = model_except_2020.predict(X_2020)
+    
+    DF_cv_2020 = y_2020.copy()
+    DF_cv_2020['y_pred2005'] = y_pred2020
+    DF_cv_2020.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2020.csv")
     
     y_pred = y_pred2020
     y = y_2020
