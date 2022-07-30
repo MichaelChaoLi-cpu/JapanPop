@@ -1,5 +1,9 @@
 #NOTE: this script only works on HPC
 
+#### out of memory 
+#### 2022/7/30 9:40 test 16 nodes 
+#### run 288 cores; 3072GB
+
 import pandas as pd
 import numpy as np
 #from sklearn.model_selection import cross_val_score
@@ -30,6 +34,9 @@ def getRawData():
     bigX = bigX.fillna(0)
     
     pointLonLatAll = pd.read_csv(single_dataset_location + "98_pointLonLatALL.csv")
+    pointLonLatAll.G04c_001 = pointLonLatAll.G04c_001.astype("int32")
+    pointLonLatAll.year = pointLonLatAll.year.astype("int32")
+    pointLonLatAll = pointLonLatAll.set_index(['G04c_001', 'year'])
     bigX = pd.concat([bigX, pointLonLatAll], axis=1)
     
     ##### y
@@ -49,16 +56,19 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     ##### total population
     y=realPopDf_Y[[selectVariable]]
     
-    df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
+    df_merged = pd.concat([y, bigX], axis=1)
+    df_merged.shape
+    df_merged = df_merged.fillna(0)
+    df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
     df_merged.shape
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:54]
+    X = df_merged.iloc[:, 1:56]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
     
-    model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+    model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model.fit(X, y)
     
     model.oob_score_
@@ -109,7 +119,7 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     # cross validation
     Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,
                                                     random_state=1)
-    model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+    model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_cv.fit(Xtrain, ytrain)
     ytest_cv = model_cv.predict(Xtest)
     
@@ -161,14 +171,17 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     ##### total population
     y=realPopDf_Y[[selectVariable]]
     
-    df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
+    df_merged = pd.concat([y, bigX], axis=1)
+    df_merged.shape
+    df_merged = df_merged.fillna(0)
+    df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
     df_merged.shape
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:54]
+    X = df_merged.iloc[:, 1:56]
     X = X.fillna(0)
-    y_raw = df_merged.iloc[:, 0:1]
+    y = df_merged.iloc[:, 0:1]
     #### cross year 
     #### except 2005
     X_except2005 = X.query("year != 2005")
@@ -179,7 +192,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2005.head()
     y_2005 = y_raw.query("year == 2005")
     y_2005.head()
-    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_except_2005.fit(X_except2005, y_except2005)
     y_pred2005 = model_except_2005.predict(X_2005)
     
@@ -225,6 +238,12 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
+    model_except_2005 = 0
+    X_except2005 = 0
+    X_2005 = 0
+    y_except2005 = 0
+    y_2005 = 0
+    
     #### except 2010
     X_except2010 = X.query("year != 2010")
     X_except2010.head()
@@ -234,7 +253,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2010.head()
     y_2010 = y_raw.query("year == 2010")
     y_2010.head()
-    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_except_2010.fit(X_except2010, y_except2010)
     y_pred2010 = model_except_2010.predict(X_2010)
     
@@ -280,6 +299,12 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
+    model_except_2010 = 0
+    X_except2010 = 0
+    X_2010 = 0
+    y_except2010 = 0
+    y_2010 = 0
+    
     #### except 2015
     X_except2015 = X.query("year != 2015")
     X_except2015.head()
@@ -289,7 +314,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2015.head()
     y_2015 = y_raw.query("year == 2015")
     y_2015.head()
-    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
     model_except_2015.fit(X_except2015, y_except2015)
     y_pred2015 = model_except_2015.predict(X_2015)
     
@@ -334,19 +359,109 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
+    
+    model_except_2015 = 0
+    X_except2015 = 0
+    X_2015 = 0
+    y_except2015 = 0
+    y_2015 = 0
+    
+    #### except 2020
+    X_except2020 = X.query("year != 2020")
+    X_except2020.head()
+    X_2020 = X.query("year == 2020")
+    X_2020.head()
+    y_except2020 = y_raw.query("year != 2020")
+    y_except2020.head()
+    y_2020 = y_raw.query("year == 2020")
+    y_2020.head()
+    model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_except_2020.fit(X_except2020, y_except2020)
+    y_pred2020 = model_except_2020.predict(X_2020)
+    
+    y_pred = y_pred2020
+    y = y_2020
+    r2 = r2_score(y, y_pred)
+    r2
+    mae = mean_absolute_error(y, y_pred)
+    mse = mean_squared_error(y, y_pred)
+    rmse = np.sqrt(mse)
+    #r = np.corrcoef(np.array(y), np.array(y_pred))
+    #r = r[0,1]
+    reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
+    reg.coef_
+    reg.intercept_
+    
+    r2_count = r2_score(np.exp(y), np.exp(y_pred))
+    r2_count
+    mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
+    mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
+    rmse_count = np.sqrt(mse_count)
+    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
+    #r_count = r_count[0,1]
+    reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
+    reg_count.coef_
+    reg_count.intercept_
+    
+    f = open(result_location + "log_indicators.txt", "a")
+    f.write("##### Temporal Cross-Validation 2020:\n")
+    f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
+    f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
+    f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
+    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
+    f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
+    f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
+    f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
+    f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
+    f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
+    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
+    f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
+    f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
+    f.close()
+    
+    model_except_2020 = 0
+    X_except2020 = 0
+    X_2020 = 0
+    y_except2020 = 0
+    y_2020 = 0
 
-print("BASE DONE!")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("BASE DONE!\n\n")
+f.close()
+
 bigX, realPopDf_Y = getRawData()
-print("We get the data!")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("We get the data!")
+f.close()
+
 MdodelandCV(bigX, realPopDf_Y, "Total")
-print("Total Pop 1 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Pop 1 stage")
+f.close()
+
 TemporalCV(bigX, realPopDf_Y, "Total")
-print("Total Pop 2 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Pop 2 stage")
+f.close()
+
 MdodelandCV(bigX, realPopDf_Y, "Male")
-print("Total Male 1 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Male 1 stage")
+f.close()
+
 TemporalCV(bigX, realPopDf_Y, "Male")
-print("Total Male 2 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Male 2 stage")
+f.close()
+
 MdodelandCV(bigX, realPopDf_Y, "Female")
-print("Total Female 1 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Female 1 stage")
+f.close()
+
 TemporalCV(bigX, realPopDf_Y, "Female")
-print("Total Female 2 stage")
+f = open(result_location + "log_indicators.txt", "a")
+f.write("Total Female 2 stage")
+f.close()
