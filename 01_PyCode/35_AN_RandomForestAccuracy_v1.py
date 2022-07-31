@@ -68,7 +68,7 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
     
-    model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model.fit(X, y)
     
     model.oob_score_
@@ -123,12 +123,12 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
-    
+    model = 0
     
     # cross validation
     Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,
                                                     random_state=1)
-    model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_cv.fit(Xtrain, ytrain)
     ytest_cv = model_cv.predict(Xtest)
     
@@ -195,6 +195,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     X = df_merged.iloc[:, 1:56]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
+    y_raw = y
     #### cross year 
     #### except 2005
     X_except2005 = X.query("year != 2005")
@@ -205,7 +206,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2005.head()
     y_2005 = y_raw.query("year == 2005")
     y_2005.head()
-    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2005.fit(X_except2005, y_except2005)
     y_pred2005 = model_except_2005.predict(X_2005)
     
@@ -270,7 +271,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2010.head()
     y_2010 = y_raw.query("year == 2010")
     y_2010.head()
-    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2010.fit(X_except2010, y_except2010)
     y_pred2010 = model_except_2010.predict(X_2010)
     
@@ -335,7 +336,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2015.head()
     y_2015 = y_raw.query("year == 2015")
     y_2015.head()
-    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2015.fit(X_except2015, y_except2015)
     y_pred2015 = model_except_2015.predict(X_2015)
     
@@ -400,7 +401,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2020.head()
     y_2020 = y_raw.query("year == 2020")
     y_2020.head()
-    model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=250)
+    model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2020.fit(X_except2020, y_except2020)
     y_pred2020 = model_except_2020.predict(X_2020)
     
@@ -462,35 +463,35 @@ f.close()
 
 bigX, realPopDf_Y = getRawData()
 f = open(result_location + "log_indicators.txt", "a")
-f.write("We get the data!")
+f.write("We get the data!\n\n")
 f.close()
 
 MdodelandCV(bigX, realPopDf_Y, "Total")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Pop 1 stage")
+f.write("Total Pop 1 stage\n\n")
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Total")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Pop 2 stage")
+f.write("Total Pop 2 stage\n\n")
 f.close()
 
 MdodelandCV(bigX, realPopDf_Y, "Male")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Male 1 stage")
+f.write("Total Male 1 stage\n\n")
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Male")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Male 2 stage")
+f.write("Total Male 2 stage\n\n")
 f.close()
 
 MdodelandCV(bigX, realPopDf_Y, "Female")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Female 1 stage")
+f.write("Total Female 1 stage\n\n")
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Female")
 f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Female 2 stage")
+f.write("Total Female 2 stage\n\n")
 f.close()

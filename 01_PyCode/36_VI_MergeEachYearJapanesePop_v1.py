@@ -85,6 +85,7 @@ def drawFigure(outputVariable):
     cbar.ax.tick_params(labelsize=30) 
     
     fig.savefig(figure_location + "merged_"+outputVariable+"_log.jpg")
-    
+
+drawFigure('total')    
 drawFigure('male')
 drawFigure('female')

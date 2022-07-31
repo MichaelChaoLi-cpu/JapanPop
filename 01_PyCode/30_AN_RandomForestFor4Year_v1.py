@@ -305,6 +305,25 @@ f.write("Total Year Male pop log CV R2 rate 2015: " + str(r2_cv_2015) + "\n")
 f.write("Total Year Male pop log OOB rate 2015: " + str(model_except_2015.oob_score_) + "\n")
 f.close()
 
+#### except 2020
+X_except2015 = X.query("year != 2020")
+X_2020 = X.query("year == 2020")
+y_except2020 = y.query("year != 2020")
+y_2020 = y.query("year == 2020")
+model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2020.fit(X_except2020, y_except2020)
+y_pred2020 = model_except_2020.predict(X_2020)
+r2_cv_2020 = r2_score(y_2020, y_pred2020)
+DF_cv_2020 = y_2020.copy()
+DF_cv_2020['y_pred2020'] = y_pred2020
+DF_cv_2020.to_csv(result_location + "SKlearn_1000tree_male_DF_cv_2020.csv")
+r2_cv_2020
+model_except_2020.oob_score_
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Male pop log CV R2 rate 2020: " + str(r2_cv_2020) + "\n")
+f.write("Total Year Male pop log OOB rate 2020: " + str(model_except_2020.oob_score_) + "\n")
+f.close()
+
 ##### female population
 y=realPopDf_Y[['FemalePopLog']]
 
@@ -410,4 +429,23 @@ model_except_2015.oob_score_
 f = open(result_location + "log.txt", "a")
 f.write("Total Year Female pop log CV R2 rate 2015: " + str(r2_cv_2015) + "\n")
 f.write("Total Year Female pop log OOB rate 2015: " + str(model_except_2015.oob_score_) + "\n")
+f.close()
+
+#### except 2020
+X_except2020 = X.query("year != 2020")
+X_2020 = X.query("year == 2020")
+y_except2020 = y.query("year != 2020")
+y_2020 = y.query("year == 2020")
+model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
+model_except_2020.fit(X_except2020, y_except2020)
+y_pred2020 = model_except_2020.predict(X_2020)
+r2_cv_2020 = r2_score(y_2020, y_pred2020)
+DF_cv_2020 = y_2020.copy()
+DF_cv_2020['y_pred2020'] = y_pred2020
+DF_cv_2020.to_csv(result_location + "SKlearn_1000tree_female_DF_cv_2020.csv")
+r2_cv_2020
+model_except_2020.oob_score_
+f = open(result_location + "log.txt", "a")
+f.write("Total Year Female pop log CV R2 rate 2020: " + str(r2_cv_2020) + "\n")
+f.write("Total Year Female pop log OOB rate 2020: " + str(model_except_2020.oob_score_) + "\n")
 f.close()
