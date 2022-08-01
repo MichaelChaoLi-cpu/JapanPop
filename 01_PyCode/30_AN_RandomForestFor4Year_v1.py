@@ -203,7 +203,7 @@ y=realPopDf_Y[['MalePopLog']]
 
 df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
 df_merged = df_merged.dropna()
-X = df_merged.iloc[:, 1:54]
+X = df_merged.iloc[:, 1:56]
 X = X.fillna(0)
 y = df_merged.iloc[:, 0:1]
 

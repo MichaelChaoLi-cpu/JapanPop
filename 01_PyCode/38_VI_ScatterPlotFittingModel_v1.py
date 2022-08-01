@@ -44,6 +44,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.TotalPop_log,
 xidx = np.clip(np.digitize(fittingModelResultDf.TotalPop_log, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.TotalPop_log_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.TotalPop_log), fittingModelResultDf.TotalPop_log_pred)
 reg.coef_
@@ -79,6 +80,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.TotalPop,
 xidx = np.clip(np.digitize(fittingModelResultDf.TotalPop, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.TotalPop_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.TotalPop), fittingModelResultDf.TotalPop_pred)
 reg.coef_
