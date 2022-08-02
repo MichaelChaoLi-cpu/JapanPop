@@ -201,7 +201,12 @@ f.close()
 ##### male population
 y=realPopDf_Y[['MalePopLog']]
 
-df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
+df_merged = pd.concat([y, bigX], axis=1)
+df_merged.shape
+df_merged = df_merged.fillna(0)
+df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
+df_merged.shape
+
 df_merged = df_merged.dropna()
 X = df_merged.iloc[:, 1:56]
 X = X.fillna(0)
@@ -246,6 +251,11 @@ r2_cv
 f = open(result_location + "log.txt", "a")
 f.write("Total Year Male pop log CV R2 rate: " + str(r2_cv) + "\n")
 f.close()
+
+DF_cv_3_7 = ytest.copy()
+DF_cv_3_7['y_pred'] = ytest_cv
+DF_cv_3_7.to_csv(result_location + "SKlearn_1000tree_male_DF_cv_3_7.csv")
+
 
 #### cross year 
 #### except 2005
@@ -327,9 +337,14 @@ f.close()
 ##### female population
 y=realPopDf_Y[['FemalePopLog']]
 
-df_merged = pd.merge(y, bigX, on = ['G04c_001', 'year'], how='inner')
+df_merged = pd.concat([y, bigX], axis=1)
+df_merged.shape
+df_merged = df_merged.fillna(0)
+df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
+df_merged.shape
+
 df_merged = df_merged.dropna()
-X = df_merged.iloc[:, 1:54]
+X = df_merged.iloc[:, 1:56]
 X = X.fillna(0)
 y = df_merged.iloc[:, 0:1]
 

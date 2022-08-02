@@ -23,11 +23,13 @@ import multiprocessing
 single_dataset_location = "DP17/98_20yearPickles/"
 result_location = "DP17/04_Result/"
 
+log_name = "log_male_female_model_CV.txt"
+
 ### create log file:
-f = open(result_location + "log_indicators.txt", "w")
+f = open(result_location + log_name, "w")
 f.close()
 
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Core:" + str(multiprocessing.cpu_count()) + '\n')
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
@@ -76,15 +78,15 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
         
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("Before modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
-
+    
     model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model.fit(X, y)
-        
-    f = open(result_location + "log_indicators.txt", "a")
+    
+    f = open(result_location + log_name, "a")
     f.write("After modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -118,11 +120,11 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     bigX_to_pred['bigy_pred'] = bigy_pred
     bigy_pred = bigX_to_pred[['bigy_pred']].copy()
     bigy_pred.head()
-
+    
     bigy_pred.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_pop_log.csv")
     dump(model, result_location + "model_1000tree_" + selectVariable + "_pop_log_allyear.joblib") 
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write(aimGroup + "pop log ####\n")
     f.write("Total Year " + aimGroup + " pop log OOB rate: " + str(model.oob_score_) + "\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
@@ -146,20 +148,20 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     # cross validation
     Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,
                                                     random_state=1)
-
-    f = open(result_location + "log_indicators.txt", "a")
+    
+    f = open(result_location + log_name, "a")
     f.write("Before cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
-
+    
     model_cv = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_cv.fit(Xtrain, ytrain)
-       
-    f = open(result_location + "log_indicators.txt", "a")
+    
+    f = open(result_location + log_name, "a")
     f.write("After cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
-
+    
     ytest_cv = model_cv.predict(Xtest)
     
     DF_cv_3_7 = ytest.copy()
@@ -190,7 +192,7 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("##### Cross-Validation:\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
@@ -237,15 +239,15 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_2005 = y_raw.query("year == 2005")
     y_2005.head()
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("Before 2005 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
-
+    
     model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2005.fit(X_except2005, y_except2005)
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("After 2005 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -280,7 +282,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("##### Temporal Cross-Validation 2005:\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
@@ -314,7 +316,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_2010 = y_raw.query("year == 2010")
     y_2010.head()
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("Before 2010 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -322,7 +324,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2010.fit(X_except2010, y_except2010)
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("After 2010 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -357,7 +359,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("##### Temporal Cross-Validation 2010:\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
@@ -391,7 +393,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_2015 = y_raw.query("year == 2015")
     y_2015.head()
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("Before 2015 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -399,7 +401,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2015.fit(X_except2015, y_except2015)
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("After 2015 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -434,7 +436,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("##### Temporal Cross-Validation 2015:\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
@@ -468,7 +470,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_2020 = y_raw.query("year == 2020")
     y_2020.head()
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("Before 2020 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -476,7 +478,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
     model_except_2020.fit(X_except2020, y_except2020)
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("After 2020 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
@@ -511,7 +513,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     reg_count.coef_
     reg_count.intercept_
     
-    f = open(result_location + "log_indicators.txt", "a")
+    f = open(result_location + log_name, "a")
     f.write("##### Temporal Cross-Validation 2020:\n")
     f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
     f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
@@ -535,51 +537,51 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     y_except2020 = 0
     y_2020 = 0
 
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("BASE DONE!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 
 bigX, realPopDf_Y = getRawData()
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("We get the data!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 
 MdodelandCV(bigX, realPopDf_Y, "Total")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Pop 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Total")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Pop 2 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 MdodelandCV(bigX, realPopDf_Y, "Male")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Male 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Male")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Male 2 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 MdodelandCV(bigX, realPopDf_Y, "Female")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Female 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
 TemporalCV(bigX, realPopDf_Y, "Female")
-f = open(result_location + "log_indicators.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Female 2 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
