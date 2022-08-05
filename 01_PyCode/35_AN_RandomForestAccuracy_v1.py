@@ -60,7 +60,7 @@ def getRawData():
     
     return bigX, realPopDf_Y
 
-def MdodelandCV(bigX, realPopDf_Y, aimGroup):
+def MdodelandCV(bigX, realPopDf_Y, aimGroup, log_name):
     result_location = "DP17/04_Result/"
     selectVariable = aimGroup + 'PopLog'
     ##### total population
@@ -574,7 +574,7 @@ f.write("Total Male 2 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-MdodelandCV(bigX, realPopDf_Y, "Female")
+MdodelandCV(bigX, realPopDf_Y, "Female", log_name)
 f = open(result_location + log_name, "a")
 f.write("Total Female 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
