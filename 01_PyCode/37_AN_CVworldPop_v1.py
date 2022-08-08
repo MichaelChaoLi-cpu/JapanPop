@@ -20,6 +20,8 @@ coords_extration.set_crs(4326)
 raster2005 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2005_1km_UNadj.tif"
 raster2010 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2010_1km_UNadj.tif"
 raster2015 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2015_1km_UNadj.tif"
+raster2020 = "F:\\17_Article\\01_Data\\97_WorldPopCV\\01_WorldPopUNadj\\jpn_pd_2020_1km_UNadj.tif"
+
 
 def extractValue(rasterLocation, coords_extration):
     rasterFile = rasterio.open(rasterLocation)
@@ -41,14 +43,17 @@ def extractValue(rasterLocation, coords_extration):
 value2005 = extractValue(raster2005, coords_extration)
 value2010 = extractValue(raster2010, coords_extration)
 value2015 = extractValue(raster2015, coords_extration)
+value2020 = extractValue(raster2020, coords_extration)
 
 coords_extration['WorldPop_2005'] = value2005
 coords_extration['WorldPop_2010'] = value2010
 coords_extration['WorldPop_2015'] = value2015
+coords_extration['WorldPop_2020'] = value2020
 
 coords_extration['WorldPop_2005'] = coords_extration['WorldPop_2005'].replace(-99999.0, np.nan)
 coords_extration['WorldPop_2010'] = coords_extration['WorldPop_2010'].replace(-99999.0, np.nan)
 coords_extration['WorldPop_2015'] = coords_extration['WorldPop_2015'].replace(-99999.0, np.nan)
+coords_extration['WorldPop_2020'] = coords_extration['WorldPop_2020'].replace(-99999.0, np.nan)
 
 polyMesh = gpd.read_file("F:/17_Article/01_Data/00_mesh/Mesh500/mergedPolyMesh500m.shp")
 polyMesh = polyMesh.set_crs(4326)
@@ -64,10 +69,11 @@ worldPopDataset = pd.concat(
 worldPopDataset['2005'] = worldPopDataset['WorldPop_2005']*worldPopDataset['area']
 worldPopDataset['2010'] = worldPopDataset['WorldPop_2010']*worldPopDataset['area']
 worldPopDataset['2015'] = worldPopDataset['WorldPop_2015']*worldPopDataset['area']
+worldPopDataset['2020'] = worldPopDataset['WorldPop_2020']*worldPopDataset['area']
 
-worldPopDataset = worldPopDataset[['G04c_001', '2005', '2010', '2015']]
+worldPopDataset = worldPopDataset[['G04c_001', '2005', '2010', '2015', '2020']]
 worldPopDataset = pd.melt(worldPopDataset, id_vars='G04c_001',
-                          value_vars=['2005', '2010', '2015'])
+                          value_vars=['2005', '2010', '2015', '2020'])
 worldPopDataset.columns = ['G04c_001', 'year', 'WorldPopCount']
 worldPopDataset.G04c_001 = worldPopDataset.G04c_001.astype('int32')
 worldPopDataset.year = worldPopDataset.year.astype('int32')

@@ -132,6 +132,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.MalePop_log,
 xidx = np.clip(np.digitize(fittingModelResultDf.MalePop_log, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.MalePop_log_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.MalePop_log), fittingModelResultDf.MalePop_log_pred)
 reg.coef_
@@ -167,6 +168,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.MalePop,
 xidx = np.clip(np.digitize(fittingModelResultDf.MalePop, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.MalePop_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.MalePop), fittingModelResultDf.MalePop_pred)
 reg.coef_
@@ -218,6 +220,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.FemalePop_log,
 xidx = np.clip(np.digitize(fittingModelResultDf.FemalePop_log, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.FemalePop_log_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.FemalePop_log), fittingModelResultDf.FemalePop_log_pred)
 reg.coef_
@@ -253,6 +256,7 @@ hist, xedges, yedges = np.histogram2d(fittingModelResultDf.FemalePop,
 xidx = np.clip(np.digitize(fittingModelResultDf.FemalePop, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(fittingModelResultDf.FemalePop_pred, yedges), 0, hist.shape[1] - 1)
 c = hist[xidx, yidx]
+c[c > 30000] = 30000
 
 reg = LinearRegression().fit(pd.DataFrame(fittingModelResultDf.FemalePop), fittingModelResultDf.FemalePop_pred)
 reg.coef_
