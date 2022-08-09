@@ -5,6 +5,9 @@ Created on Sun Jul 24 14:05:30 2022
 @author: li.chao.987@s.kyushu-u.ac.jp
 """
 
+from IPython import get_ipython
+get_ipython().magic('reset -sf')
+
 import pandas as pd
 import geopandas as gpd
 import numpy as np
@@ -86,6 +89,8 @@ realPopDf_Y = pd.read_pickle(single_dataset_location + "03_population.pkl")
 
 ##### cv test
 testDf = pd.concat([realPopDf_Y, worldPopDataset], axis = 1)
+testDf.TotalPop = testDf.TotalPop.fillna(0)
+testDf = testDf.drop(columns=['MalePop', 'FemalePop', 'Family'])
 testDf = testDf.dropna()
 
 r2 = r2_score(testDf.TotalPop, testDf.WorldPopCount)

@@ -32,6 +32,7 @@ hist, xedges, yedges = np.histogram2d(total_pop_cv_2005.TotalPopLog, total_pop_c
 xidx = np.clip(np.digitize(total_pop_cv_2005.TotalPopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(total_pop_cv_2005.y_pred2005, yedges), 0, hist.shape[1] - 1)
 c_2005 = hist[xidx, yidx]
+c_2005[c_2005 > 30000] = 30000
 
 reg_2005 = LinearRegression().fit(pd.DataFrame(total_pop_cv_2005.TotalPopLog), total_pop_cv_2005.y_pred2005)
 reg_2005.coef_
@@ -47,6 +48,7 @@ hist, xedges, yedges = np.histogram2d(total_pop_cv_2010.TotalPopLog, total_pop_c
 xidx = np.clip(np.digitize(total_pop_cv_2010.TotalPopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(total_pop_cv_2010.y_pred2010, yedges), 0, hist.shape[1] - 1)
 c_2010 = hist[xidx, yidx]
+c_2010[c_2010 > 30000] = 30000
 
 reg_2010 = LinearRegression().fit(pd.DataFrame(total_pop_cv_2010.TotalPopLog), total_pop_cv_2010.y_pred2010)
 reg_2010.coef_
@@ -62,13 +64,30 @@ hist, xedges, yedges = np.histogram2d(total_pop_cv_2015.TotalPopLog, total_pop_c
 xidx = np.clip(np.digitize(total_pop_cv_2015.TotalPopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(total_pop_cv_2015.y_pred2015, yedges), 0, hist.shape[1] - 1)
 c_2015 = hist[xidx, yidx]
+c_2015[c_2015 > 30000] = 30000
 
 reg_2015 = LinearRegression().fit(pd.DataFrame(total_pop_cv_2015.TotalPopLog), total_pop_cv_2015.y_pred2015)
 reg_2015.coef_
 reg_2015.intercept_
 
+# 2020
+total_pop_cv_2020 = pd.read_csv(result_folder + "SKlearn_1000tree_total_DF_cv_2015.csv")
+total_pop_cv_2020 = total_pop_cv_2015.set_index(["G04c_001", "year"])
+
+xedges, yedges = np.linspace(0, 10, 41), np.linspace(0, 10, 41)
+hist, xedges, yedges = np.histogram2d(total_pop_cv_2020.TotalPopLog, total_pop_cv_2020.y_pred2020, (xedges, yedges))
+
+xidx = np.clip(np.digitize(total_pop_cv_2020.TotalPopLog, xedges), 0, hist.shape[0] - 1)
+yidx = np.clip(np.digitize(total_pop_cv_2020.y_pred2020, yedges), 0, hist.shape[1] - 1)
+c_2020 = hist[xidx, yidx]
+c_2020[c_2020 > 30000] = 30000
+
+reg_2020 = LinearRegression().fit(pd.DataFrame(total_pop_cv_2015.TotalPopLog), total_pop_cv_2015.y_pred2015)
+reg_2020.coef_
+reg_2020.intercept_
+
 # figure
-fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(30, 10.5), dpi=1000,
+fig, axs = plt.subplots(nrows=2, ncols=4, figsize=(40, 10.5), dpi=1000,
                         gridspec_kw={'height_ratios': [10, 0.5]})
 axs[0,0].scatter(total_pop_cv_2005.TotalPopLog, total_pop_cv_2005.y_pred2005, 
             c=c_2005, cmap=cmap)
@@ -128,6 +147,27 @@ axs[0,2].set_xlim([0, 10])
 axs[0,2].set_ylim([0, 10])
 
 norm = mpl.colors.Normalize(vmin=np.min(c_2015), vmax=np.max(c_2015))
+cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
+                    cax=axs[1,2], orientation='horizontal')
+cbar.set_label('Density',size=24)
+cbar.ax.tick_params(labelsize=18) 
+
+axs[0,3].scatter(total_pop_cv_2020.TotalPopLog, total_pop_cv_2020.y_pred2020, 
+            c=c_2020, cmap=cmap)
+axs[0,3].axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
+           label='y = x')
+axs[0,3].axline((0, reg_2020.intercept_), (10, (reg_2020.intercept_ + 10 * reg_2020.coef_[0])), 
+           linewidth=6, color='blue', alpha=0.4, linestyle='--',
+           label='y = ' + str(round(reg_2020.coef_[0], 2))+"x + " + str(round(reg_2020.intercept_, 2)))
+axs[0,2].grid(True)
+axs[0,2].legend()
+axs[0,2].text(9, 9.7, "c", fontsize=20)
+axs[0,2].set_xlabel("Logarithm of the Observed Total Population in 2020", fontsize=15)
+axs[0,2].set_ylabel("Logarithm of the Predicted Total Population in 2020", fontsize=15)
+axs[0,2].set_xlim([0, 10])
+axs[0,2].set_ylim([0, 10])
+
+norm = mpl.colors.Normalize(vmin=np.min(c_2020), vmax=np.max(c_2020))
 cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
                     cax=axs[1,2], orientation='horizontal')
 cbar.set_label('Density',size=24)
