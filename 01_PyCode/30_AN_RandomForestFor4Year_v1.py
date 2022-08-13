@@ -15,6 +15,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 from joblib import dump
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_squared_error
+from sklearn.linear_model import LinearRegression
 
 #single_dataset_location = "F:\\17_Article\\01_Data\\98_20yearPickles\\"
 single_dataset_location = "DP17/98_20yearPickles/"
@@ -63,6 +66,23 @@ model.oob_score_
 y_pred = model.predict(X)
 r2 = r2_score(y, y_pred)
 r2
+mae = mean_absolute_error(y, y_pred)
+mse = mean_squared_error(y, y_pred)
+rmse = np.sqrt(mse)
+#r = np.corrcoef(np.array(y), np.array(y_pred))
+#r = r[0,1]
+reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
+reg.coef_
+reg.intercept_
+
+r2_count = r2_score(np.exp(y), np.exp(y_pred))
+r2_count
+mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
+mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
+rmse_count = np.sqrt(mse_count)
+reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
+reg_count.coef_
+reg_count.intercept_
 
 bigX_to_pred = bigX.copy()
 bigy_pred = model.predict(bigX_to_pred)

@@ -89,7 +89,7 @@ reg_2020.intercept_
 # figure
 fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(20, 21), dpi=1000,
                         gridspec_kw={'height_ratios': [10, 10, 1]})
-ax_legend = fig.add_axes([0.1, 0.05, 0.8, 0.025])
+ax_legend = fig.add_axes([0.1, 0.075, 0.8, 0.05])
 axs[0,0].scatter(total_pop_cv_2005.TotalPopLog, total_pop_cv_2005.y_pred2005, 
             c=c_2005, cmap=cmap)
 axs[0,0].axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
@@ -150,6 +150,9 @@ axs[1,1].set_xlabel("Logarithm of the Observed Total Population in 2020", fontsi
 axs[1,1].set_ylabel("Logarithm of the Predicted Total Population in 2020", fontsize=15)
 axs[1,1].set_xlim([0, 10])
 axs[1,1].set_ylim([0, 10])
+
+axs[2, 0].axis('off')
+axs[2, 1].axis('off')
 
 norm = mpl.colors.Normalize(vmin=0, vmax=30000)
 cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
@@ -229,7 +232,7 @@ reg_2020.intercept_
 # figure
 fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(20, 21), dpi=1000,
                         gridspec_kw={'height_ratios': [10, 10, 1]})
-ax_legend = fig.add_axes([0.1, 0.025, 0.8, 0.005])
+ax_legend = fig.add_axes([0.1, 0.075, 0.8, 0.05])
 ax1=axs[0,0]
 ax2=axs[0,1]
 ax3=axs[1,0]
@@ -280,7 +283,7 @@ ax3.set_xlim([0, 10])
 ax3.set_ylim([0, 10])
 
 ax4.scatter(female_pop_cv_2020.FemalePopLog, female_pop_cv_2020.y_pred2005, 
-            c=c_2015, cmap=cmap)
+            c=c_2020, cmap=cmap)
 ax4.axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
            label='y = x')
 ax4.axline((0, reg_2020.intercept_), (10, (reg_2020.intercept_ + 10 * reg_2020.coef_[0])), 
@@ -294,6 +297,9 @@ ax4.set_ylabel("Logarithm of the Predicted Female Population in 2020", fontsize=
 ax4.set_xlim([0, 10])
 ax4.set_ylim([0, 10])
 
+axs[2, 0].axis('off')
+axs[2, 1].axis('off')
+
 norm = mpl.colors.Normalize(vmin=0, vmax=30000)
 cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
                     cax=ax_legend, orientation='horizontal')
@@ -304,7 +310,7 @@ fig.savefig(figure_location + "CV_female.jpg")
 
 #### male population
 # 2005
-male_pop_cv_2005 = pd.read_csv(result_folder + "SKlearn_1000tree_male_DF_cv_2005.csv")
+male_pop_cv_2005 = pd.read_csv(result_folder + "SKlearn_1000tree_MalePopLog_DF_cv_2005.csv")
 male_pop_cv_2005 = male_pop_cv_2005.set_index(["G04c_001", "year"])
 
 xedges, yedges = np.linspace(0, 10, 41), np.linspace(0, 10, 41)
@@ -313,13 +319,14 @@ hist, xedges, yedges = np.histogram2d(male_pop_cv_2005.MalePopLog, male_pop_cv_2
 xidx = np.clip(np.digitize(male_pop_cv_2005.MalePopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(male_pop_cv_2005.y_pred2005, yedges), 0, hist.shape[1] - 1)
 c_2005 = hist[xidx, yidx]
+c_2005[c_2005 > 30000] = 30000
 
 reg_2005 = LinearRegression().fit(pd.DataFrame(male_pop_cv_2005.MalePopLog), male_pop_cv_2005.y_pred2005)
 reg_2005.coef_
 reg_2005.intercept_
 
 # 2010
-male_pop_cv_2010 = pd.read_csv(result_folder + "SKlearn_1000tree_male_DF_cv_2010.csv")
+male_pop_cv_2010 = pd.read_csv(result_folder + "SKlearn_1000tree_MalePopLog_DF_cv_2010.csv")
 male_pop_cv_2010 = male_pop_cv_2010.set_index(["G04c_001", "year"])
 
 xedges, yedges = np.linspace(0, 10, 41), np.linspace(0, 10, 41)
@@ -328,13 +335,14 @@ hist, xedges, yedges = np.histogram2d(male_pop_cv_2010.MalePopLog, male_pop_cv_2
 xidx = np.clip(np.digitize(male_pop_cv_2010.MalePopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(male_pop_cv_2010.y_pred2010, yedges), 0, hist.shape[1] - 1)
 c_2010 = hist[xidx, yidx]
+c_2010[c_2010 > 30000] = 30000
 
 reg_2010 = LinearRegression().fit(pd.DataFrame(male_pop_cv_2010.MalePopLog), male_pop_cv_2010.y_pred2010)
 reg_2010.coef_
 reg_2010.intercept_
 
 # 2015
-male_pop_cv_2015 = pd.read_csv(result_folder + "SKlearn_1000tree_male_DF_cv_2015.csv")
+male_pop_cv_2015 = pd.read_csv(result_folder + "SKlearn_1000tree_MalePopLog_DF_cv_2015.csv")
 male_pop_cv_2015 = male_pop_cv_2015.set_index(["G04c_001", "year"])
 
 xedges, yedges = np.linspace(0, 10, 41), np.linspace(0, 10, 41)
@@ -343,17 +351,36 @@ hist, xedges, yedges = np.histogram2d(male_pop_cv_2015.MalePopLog, male_pop_cv_2
 xidx = np.clip(np.digitize(male_pop_cv_2015.MalePopLog, xedges), 0, hist.shape[0] - 1)
 yidx = np.clip(np.digitize(male_pop_cv_2015.y_pred2015, yedges), 0, hist.shape[1] - 1)
 c_2015 = hist[xidx, yidx]
+c_2015[c_2015 > 30000] = 30000
 
 reg_2015 = LinearRegression().fit(pd.DataFrame(male_pop_cv_2015.MalePopLog), male_pop_cv_2015.y_pred2015)
 reg_2015.coef_
 reg_2015.intercept_
 
+# 2020
+male_pop_cv_2020 = pd.read_csv(result_folder + "SKlearn_1000tree_MalePopLog_DF_cv_2020.csv")
+male_pop_cv_2020 = male_pop_cv_2020.set_index(["G04c_001", "year"])
+
+xedges, yedges = np.linspace(0, 10, 41), np.linspace(0, 10, 41)
+hist, xedges, yedges = np.histogram2d(male_pop_cv_2020.MalePopLog, male_pop_cv_2020.y_pred2005, (xedges, yedges))
+
+xidx = np.clip(np.digitize(male_pop_cv_2020.MalePopLog, xedges), 0, hist.shape[0] - 1)
+yidx = np.clip(np.digitize(male_pop_cv_2020.y_pred2005, yedges), 0, hist.shape[1] - 1)
+c_2020 = hist[xidx, yidx]
+c_2020[c_2020 > 30000] = 30000
+
+reg_2020 = LinearRegression().fit(pd.DataFrame(male_pop_cv_2020.MalePopLog), male_pop_cv_2020.y_pred2005)
+reg_2020.coef_
+reg_2020.intercept_
+
 # figure
-fig, axs = plt.subplots(nrows=2, ncols=3, figsize=(30, 10.5), dpi=1000,
-                        gridspec_kw={'height_ratios': [10, 0.5]})
+fig, axs = plt.subplots(nrows=3, ncols=2, figsize=(20, 21), dpi=1000,
+                        gridspec_kw={'height_ratios': [10, 10, 1]})
+ax_legend = fig.add_axes([0.1, 0.075, 0.8, 0.05])
 ax1=axs[0,0]
 ax2=axs[0,1]
-ax3=axs[0,2]
+ax3=axs[1,0]
+ax4=axs[1,1]
 ax1.scatter(male_pop_cv_2005.MalePopLog, male_pop_cv_2005.y_pred2005, 
             c=c_2005, cmap=cmap)
 ax1.axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
@@ -368,12 +395,6 @@ ax1.set_xlabel("Logarithm of the Observed Male Population in 2005", fontsize=15)
 ax1.set_ylabel("Logarithm of the Predicted Male Population in 2005", fontsize=15)
 ax1.set_xlim([0, 10])
 ax1.set_ylim([0, 10])
-
-norm = mpl.colors.Normalize(vmin=np.min(c_2005), vmax=np.max(c_2005))
-cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
-                    cax=axs[1,0], orientation='horizontal')
-cbar.set_label('Density',size=24)
-cbar.ax.tick_params(labelsize=18) 
 
 ax2.scatter(male_pop_cv_2010.MalePopLog, male_pop_cv_2010.y_pred2010, 
             c=c_2010, cmap=cmap)
@@ -390,12 +411,6 @@ ax2.set_ylabel("Logarithm of the Predicted Male Population in 2010", fontsize=15
 ax2.set_xlim([0, 10])
 ax2.set_ylim([0, 10])
 
-norm = mpl.colors.Normalize(vmin=np.min(c_2010), vmax=np.max(c_2010))
-cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
-                    cax=axs[1,1], orientation='horizontal')
-cbar.set_label('Density',size=24)
-cbar.ax.tick_params(labelsize=18) 
-
 ax3.scatter(male_pop_cv_2015.MalePopLog, male_pop_cv_2015.y_pred2015, 
             c=c_2015, cmap=cmap)
 ax3.axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
@@ -411,12 +426,28 @@ ax3.set_ylabel("Logarithm of the Predicted Male Population in 2015", fontsize=15
 ax3.set_xlim([0, 10])
 ax3.set_ylim([0, 10])
 
-norm = mpl.colors.Normalize(vmin=np.min(c_2015), vmax=np.max(c_2015))
+ax4.scatter(male_pop_cv_2020.MalePopLog, male_pop_cv_2020.y_pred2005, 
+            c=c_2020, cmap=cmap)
+ax4.axline((0, 0), (10, 10), linewidth=6, color='r', alpha=0.4, linestyle='--',
+           label='y = x')
+ax4.axline((0, reg_2020.intercept_), (10, (reg_2020.intercept_ + 10 * reg_2020.coef_[0])), 
+           linewidth=6, color='blue', alpha=0.4, linestyle='--',
+           label='y = ' + str(round(reg_2020.coef_[0], 2))+"x + " + str(round(reg_2020.intercept_, 2)))
+ax4.grid(True)
+ax4.legend()
+ax4.text(9, 9.7, "c", fontsize=20)
+ax4.set_xlabel("Logarithm of the Observed Male Population in 2020", fontsize=15)
+ax4.set_ylabel("Logarithm of the Predicted Male Population in 2020", fontsize=15)
+ax4.set_xlim([0, 10])
+ax4.set_ylim([0, 10])
+
+axs[2, 0].axis('off')
+axs[2, 1].axis('off')
+
+norm = mpl.colors.Normalize(vmin=0, vmax=30000)
 cbar = fig.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=cmap),
-                    cax=axs[1,2], orientation='horizontal')
+                    cax=ax_legend, orientation='horizontal')
 cbar.set_label('Density',size=24)
 cbar.ax.tick_params(labelsize=18) 
-
-#plt.show();
 
 fig.savefig(figure_location + "CV_male.jpg")
