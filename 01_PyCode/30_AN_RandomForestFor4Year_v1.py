@@ -114,6 +114,30 @@ ytest_cv = model_cv.predict(Xtest)
 
 r2_cv = r2_score(ytest, ytest_cv)
 r2_cv
+mae = mean_absolute_error(ytest, ytest_cv)
+print(mae)
+mse = mean_squared_error(ytest, ytest_cv)
+rmse = np.sqrt(mse)
+print(rmse)
+#r = np.corrcoef(np.array(y), np.array(y_pred))
+#r = r[0,1]
+reg = LinearRegression().fit(pd.DataFrame(ytest), np.array(ytest_cv))
+print(reg.coef_)
+print(reg.intercept_)
+
+r2_cv_count = r2_score(np.exp(ytest), np.exp(ytest_cv))
+print(r2_cv_count)
+mae_count = mean_absolute_error(np.exp(ytest), np.exp(ytest_cv))
+print(mae_count)
+mse_count = mean_squared_error(np.exp(ytest), np.exp(ytest_cv))
+rmse_count = np.sqrt(mse_count)
+print(rmse_count)
+#r = np.corrcoef(np.array(y), np.array(y_pred))
+#r = r[0,1]
+reg_count = LinearRegression().fit(pd.DataFrame(np.exp(ytest)), 
+                                   np.array(np.exp(ytest_cv)))
+print(reg_count.coef_)
+print(reg_count.intercept_)
 
 f = open(result_location + "log.txt", "a")
 f.write("Total Year Total pop log CV R2 rate: " + str(r2_cv) + "\n")
