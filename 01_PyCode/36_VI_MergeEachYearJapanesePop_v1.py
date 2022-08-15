@@ -87,5 +87,5 @@ def drawFigure(outputVariable):
     fig.savefig(figure_location + "merged_"+outputVariable+"_log.jpg")
 
 drawFigure('total')    
-drawFigure('male')
-drawFigure('female')
+drawFigure('MalePopLog')
+drawFigure('FemalePopLog')
