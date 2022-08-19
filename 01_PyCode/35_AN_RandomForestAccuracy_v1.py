@@ -11,10 +11,8 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_absolute_error
-from joblib import dump
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
-from scipy.stats import pearsonr
 from sklearn.linear_model import LinearRegression
 import psutil
 import multiprocessing
@@ -23,7 +21,7 @@ import multiprocessing
 single_dataset_location = "DP17/98_20yearPickles/"
 result_location = "DP17/04_Result/"
 
-log_name = "log_male_female_model_CV.txt"
+log_name = "CV82_0812.txt"
 
 ### create log file:
 f = open(result_location + log_name, "w")
@@ -34,8 +32,7 @@ f.write("Core:" + str(multiprocessing.cpu_count()) + '\n')
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-
-def getRawData():
+def df_mergedPrepare(aimGroup):
     single_dataset_location = "DP17/98_20yearPickles/"
     bigX = pd.read_csv(single_dataset_location + "99_mergedDataset.csv")
     bigX.G04c_001 = bigX.G04c_001.astype("int32")
@@ -48,6 +45,8 @@ def getRawData():
     pointLonLatAll.year = pointLonLatAll.year.astype("int32")
     pointLonLatAll = pointLonLatAll.set_index(['G04c_001', 'year'])
     bigX = pd.concat([bigX, pointLonLatAll], axis=1)
+    bigX = bigX.drop(columns='index')
+    bigX = bigX.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
     
     ##### y
     realPopDf_Y = pd.read_csv(single_dataset_location + "03_population.csv")
@@ -58,92 +57,35 @@ def getRawData():
     realPopDf_Y['FemalePopLog'] = np.log(realPopDf_Y['FemalePop'] + 1)
     realPopDf_Y = realPopDf_Y.set_index(['G04c_001', 'year'])
     
-    return bigX, realPopDf_Y
-
-def MdodelandCV(bigX, realPopDf_Y, aimGroup, log_name):
-    result_location = "DP17/04_Result/"
     selectVariable = aimGroup + 'PopLog'
     ##### total population
     y=realPopDf_Y[[selectVariable]]
-    
     df_merged = pd.concat([y, bigX], axis=1)
     df_merged.shape
     df_merged = df_merged.fillna(0)
     df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
-    df_merged.shape
+    
+    df_merged.to_csv(single_dataset_location + "00_temp_merge_" + aimGroup + ".csv")
+
+
+def Mdodel82CV(aimGroup, log_name):
+    single_dataset_location = "DP17/98_20yearPickles/"
+    result_location = "DP17/04_Result/"
+    selectVariable = aimGroup + 'PopLog'
+    
+    df_merged = pd.read_csv(single_dataset_location + "00_temp_merge_" + aimGroup + ".csv")
+    df_merged = df_merged.set_index(['G04c_001', 'year'])
+    
+    f = open(result_location + log_name, "a")
+    f.write("Read Data!\n")
+    f.write(str(psutil.virtual_memory()) + '\n')
+    f.close()
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:56]
+    X = df_merged.iloc[:, 1:55]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
-        
-    f = open(result_location + log_name, "a")
-    f.write("Before modelling!")
-    f.write(str(psutil.virtual_memory()) + '\n')
-    f.close()
-    
-    model = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
-    model.fit(X, y)
-    
-    f = open(result_location + log_name, "a")
-    f.write("After modelling!")
-    f.write(str(psutil.virtual_memory()) + '\n')
-    f.close()
-    
-    model.oob_score_
-    y_pred = model.predict(X)
-    r2 = r2_score(y, y_pred)
-    r2
-    mae = mean_absolute_error(y, y_pred)
-    mse = mean_squared_error(y, y_pred)
-    rmse = np.sqrt(mse)
-    #r = np.corrcoef(np.array(y), np.array(y_pred))
-    #r = r[0,1]
-    reg = LinearRegression().fit(pd.DataFrame(y), np.array(y_pred))
-    reg.coef_
-    reg.intercept_
-    
-    r2_count = r2_score(np.exp(y), np.exp(y_pred))
-    r2_count
-    mae_count = mean_absolute_error(np.exp(y), np.exp(y_pred))
-    mse_count = mean_squared_error(np.exp(y), np.exp(y_pred))
-    rmse_count = np.sqrt(mse_count)
-    #r_count = np.corrcoef(np.array(np.exp(y)), np.array(np.exp(y_pred)))
-    #r_count = r_count[0,1]
-    reg_count = LinearRegression().fit(pd.DataFrame(np.exp(y)), np.array(np.exp(y_pred)))
-    reg_count.coef_
-    reg_count.intercept_
-    
-    bigX_to_pred = bigX.copy()
-    bigy_pred = model.predict(bigX_to_pred)
-    bigX_to_pred['bigy_pred'] = bigy_pred
-    bigy_pred = bigX_to_pred[['bigy_pred']].copy()
-    bigy_pred.head()
-    
-    bigy_pred.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_pop_log.csv")
-    dump(model, result_location + "model_1000tree_" + selectVariable + "_pop_log_allyear.joblib") 
-    
-    f = open(result_location + log_name, "a")
-    f.write(aimGroup + "pop log ####\n")
-    f.write("Total Year " + aimGroup + " pop log OOB rate: " + str(model.oob_score_) + "\n")
-    f.write("Total Year " + aimGroup + " pop log R2 rate: " + str(r2) + "\n")
-    f.write("Total Year " + aimGroup + " pop log MAE rate: " + str(mae) + "\n")
-    f.write("Total Year " + aimGroup + " pop log RMSE rate: " + str(rmse) + "\n")
-    #f.write("Total Year " + aimGroup + " pop log r rate: " + str(r) + "\n")
-    #f.write("Total Year " + aimGroup + " pop log p value: " + str(pvalue) + "\n")
-    f.write("Total Year " + aimGroup + " pop log intercept: " + str(reg.intercept_) + "\n")
-    f.write("Total Year " + aimGroup + " pop log coeffciet: " + str(reg.coef_) + "\n")
-    f.write("Total Year " + aimGroup + " pop R2 rate: " + str(r2_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop MAE rate: " + str(mae_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop RMSE rate: " + str(rmse_count) + "\n")
-    #f.write("Total Year " + aimGroup + " pop r rate: " + str(r_count) + "\n")
-    #f.write("Total Year " + aimGroup + " pop p value: " + str(pvalue_count) + "\n")
-    f.write("Total Year " + aimGroup + " pop intercept: " + str(reg_count.intercept_) + "\n")
-    f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
-    f.close()
-    
-    model = 0
     
     # cross validation
     Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,
@@ -210,24 +152,37 @@ def MdodelandCV(bigX, realPopDf_Y, aimGroup, log_name):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
 
-def TemporalCV(bigX, realPopDf_Y, aimGroup):
+def TemporalCV(aimGroup, log_name):
+    single_dataset_location = "DP17/98_20yearPickles/"
     result_location = "DP17/04_Result/"
     selectVariable = aimGroup + 'PopLog'
-    ##### total population
-    y=realPopDf_Y[[selectVariable]]
     
-    df_merged = pd.concat([y, bigX], axis=1)
-    df_merged.shape
-    df_merged = df_merged.fillna(0)
-    df_merged = df_merged.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
-    df_merged.shape
+    df_merged = pd.read_csv(single_dataset_location + "00_temp_merge_" + aimGroup + ".csv")
+    df_merged = df_merged.set_index(['G04c_001', 'year'])
+    
+    f = open(result_location + log_name, "a")
+    f.write("Read Data!\n")
+    f.write(str(psutil.virtual_memory()) + '\n')
+    f.close()
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:56]
+    X = df_merged.iloc[:, 1:55]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
     y_raw = y.copy()
+    
+    f = open(result_location + log_name, "a")
+    f.write("X Y prepared!\n")
+    f.write(str(psutil.virtual_memory()) + '\n')
+    f.close()
+    
+    df_merged = None
+    
+    f = open(result_location + log_name, "a")
+    f.write("df_merged=0!\n")
+    f.write(str(psutil.virtual_memory()) + '\n')
+    f.close()
     #### cross year 
     #### except 2005
     X_except2005 = X.query("year != 2005")
@@ -243,8 +198,8 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Before 2005 cv modelling!")
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
-    
-    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
+
+    model_except_2005 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2005.fit(X_except2005, y_except2005)
     
     f = open(result_location + log_name, "a")
@@ -257,6 +212,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     DF_cv_2005 = y_2005.copy()
     DF_cv_2005['y_pred2005'] = y_pred2005
     DF_cv_2005.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2005.csv")
+    DF_cv_2005 = None
     
     y_pred = y_pred2005
     y = y_2005
@@ -300,11 +256,11 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
-    model_except_2005 = 0
-    X_except2005 = 0
-    X_2005 = 0
-    y_except2005 = 0
-    y_2005 = 0
+    model_except_2005 = None
+    X_except2005 = None
+    X_2005 = None
+    y_except2005 = None
+    y_2005 = None
     
     #### except 2010
     X_except2010 = X.query("year != 2010")
@@ -321,7 +277,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
     
-    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
+    model_except_2010 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2010.fit(X_except2010, y_except2010)
     
     f = open(result_location + log_name, "a")
@@ -334,6 +290,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     DF_cv_2010 = y_2010.copy()
     DF_cv_2010['y_pred2010'] = y_pred2010
     DF_cv_2010.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2010.csv")
+    DF_cv_2010 = None
     
     y_pred = y_pred2010
     y = y_2010
@@ -377,11 +334,11 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
-    model_except_2010 = 0
-    X_except2010 = 0
-    X_2010 = 0
-    y_except2010 = 0
-    y_2010 = 0
+    model_except_2010 = None
+    X_except2010 = None
+    X_2010 = None
+    y_except2010 = None
+    y_2010 = None
     
     #### except 2015
     X_except2015 = X.query("year != 2015")
@@ -398,7 +355,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
     
-    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
+    model_except_2015 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2015.fit(X_except2015, y_except2015)
     
     f = open(result_location + log_name, "a")
@@ -411,6 +368,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     DF_cv_2015 = y_2015.copy()
     DF_cv_2015['y_pred2015'] = y_pred2015
     DF_cv_2015.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2015.csv")
+    DF_cv_2015 = None
     
     y_pred = y_pred2015
     y = y_2015
@@ -454,11 +412,11 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
-    model_except_2015 = 0
-    X_except2015 = 0
-    X_2015 = 0
-    y_except2015 = 0
-    y_2015 = 0
+    model_except_2015 = None
+    X_except2015 = None
+    X_2015 = None
+    y_except2015 = None
+    y_2015 = None
     
     #### except 2020
     X_except2020 = X.query("year != 2020")
@@ -475,7 +433,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write(str(psutil.virtual_memory()) + '\n')
     f.close()
     
-    model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=36)
+    model_except_2020 = RandomForestRegressor(n_estimators=1000, oob_score=True, random_state=1, n_jobs=-1)
     model_except_2020.fit(X_except2020, y_except2020)
     
     f = open(result_location + log_name, "a")
@@ -488,6 +446,7 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     DF_cv_2020 = y_2020.copy()
     DF_cv_2020['y_pred2005'] = y_pred2020
     DF_cv_2020.to_csv(result_location + "SKlearn_1000tree_" + selectVariable + "_DF_cv_2020.csv")
+    DF_cv_2020 = None
     
     y_pred = y_pred2020
     y = y_2020
@@ -531,57 +490,50 @@ def TemporalCV(bigX, realPopDf_Y, aimGroup):
     f.write("Total Year " + aimGroup + " pop coeffciet: " + str(reg_count.coef_) + "\n\n")
     f.close()
     
-    model_except_2020 = 0
-    X_except2020 = 0
-    X_2020 = 0
-    y_except2020 = 0
-    y_2020 = 0
+    model_except_2020 = None
+    X_except2020 = None
+    X_2020 = None
+    y_except2020 = None
+    y_2020 = None
+
 
 f = open(result_location + log_name, "a")
 f.write("BASE DONE!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-
-getRawData()
+df_mergedPrepare("Total")
 f = open(result_location + log_name, "a")
-f.write("We get the data!\n\n")
+f.write("Finish total data!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-
-MdodelandCV(bigX, realPopDf_Y, "Total")
-f = open(result_location + "log_indicators.txt", "a")
+Mdodel82CV("Total", log_name)
+f = open(result_location + log_name, "a")
 f.write("Total Pop 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-#TemporalCV(bigX, realPopDf_Y, "Total")
-f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Pop 2 stage\n\n")
+df_mergedPrepare("Male")
+f = open(result_location + log_name, "a")
+f.write("Finish male data!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-MdodelandCV(bigX, realPopDf_Y, "Male")
-f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Male 1 stage\n\n")
+Mdodel82CV("Male", log_name)
+f = open(result_location + log_name, "a")
+f.write("Male Pop 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-#TemporalCV(bigX, realPopDf_Y, "Male")
-f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Male 2 stage\n\n")
+df_mergedPrepare("Female")
+f = open(result_location + log_name, "a")
+f.write("Finish female data!\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()
 
-MdodelandCV(bigX, realPopDf_Y, "Female")
-f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Female 1 stage\n\n")
-f.write(str(psutil.virtual_memory()) + '\n')
-f.close()
-
-#TemporalCV(bigX, realPopDf_Y, "Female")
-f = open(result_location + "log_indicators.txt", "a")
-f.write("Total Female 2 stage\n\n")
+Mdodel82CV("Female", log_name)
+f = open(result_location + log_name, "a")
+f.write("Female Pop 1 stage\n\n")
 f.write(str(psutil.virtual_memory()) + '\n')
 f.close()

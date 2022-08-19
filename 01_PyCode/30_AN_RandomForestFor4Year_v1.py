@@ -19,15 +19,22 @@ from sklearn.metrics import mean_absolute_error
 from sklearn.metrics import mean_squared_error
 from sklearn.linear_model import LinearRegression
 
+
 #single_dataset_location = "F:\\17_Article\\01_Data\\98_20yearPickles\\"
 single_dataset_location = "DP17/98_20yearPickles/"
 result_location = "DP17/04_Result/"
+
+log_name = "AccuracyReport0819_log.txt"
+### create log file:
+f = open(result_location + log_name, "w")
+f.close()
 
 bigX = pd.read_csv(single_dataset_location + "99_mergedDataset.csv")
 bigX.G04c_001 = bigX.G04c_001.astype("int32")
 bigX.year = bigX.year.astype("int32")
 bigX = bigX.set_index(['G04c_001', 'year'])
 bigX = bigX.fillna(0)
+bigX = bigX.drop(columns='index')
 
 pointLonLatAll = pd.read_csv(single_dataset_location + "98_pointLonLatALL.csv")
 pointLonLatAll.G04c_001 = pointLonLatAll.G04c_001.astype("int32")
@@ -55,7 +62,7 @@ df_merged.shape
 
 df_merged = df_merged.dropna()
 df_merged.shape
-X = df_merged.iloc[:, 1:56]
+X = df_merged.iloc[:, 1:55]
 X = X.fillna(0)
 y = df_merged.iloc[:, 0:1]
 
@@ -94,16 +101,26 @@ bigy_pred.to_csv(result_location + "SKlearn_1000tree_total_pop_log.csv")
 
 dump(model, result_location + 'model_1000tree_total_pop_log_allyear.joblib') 
 
-### create log file:
-f = open(result_location + "log.txt", "w")
-f.close()
-
-f = open(result_location + "log.txt", "a")
+f = open(result_location + log_name, "a")
 f.write("Total Year Total pop log OOB rate: " + str(model.oob_score_) + "\n")
 f.write("Total Year Total pop log R2 rate: " + str(r2) + "\n")
+f.write("Total Year Total pop log MAE rate: " + str(mae) + "\n")
+f.write("Total Year Total pop log RMSE rate: " + str(rmse) + "\n")
+f.write("Total Year Total pop log intercept: " + str(reg.intercept_) + "\n")
+f.write("Total Year Total pop log coefficient: " + str(reg.coef_) + "\n")
+
+f.write("Total Year Total pop count R2 rate: " + str(r2_count) + "\n")
+f.write("Total Year Total pop count MAE rate: " + str(mae_count) + "\n")
+f.write("Total Year Total pop count RMSE rate: " + str(rmse_count) + "\n")
+f.write("Total Year Total pop count intercept: " + str(reg_count.intercept_) + "\n")
+f.write("Total Year Total pop count coefficient: " + str(reg_count.coef_) + "\n")
 f.write("Total Year Total pop log model Location: " + result_location + 'model_1000tree_total_pop_log_allyear.joblib' + "\n")
 f.write("Total Year Total pop log predict result: " + result_location + "SKlearn_1000tree_total_pop_log.csv" + "\n")
 f.close()
+
+importances = model.feature_importances_
+model_importances = pd.Series(importances, index=X.columns)
+model_importances.to_csv(result_location + "Importance_SKlearn_1000tree_total_pop_log.csv")
 
 # cross validation
 Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, train_size = 0.8,

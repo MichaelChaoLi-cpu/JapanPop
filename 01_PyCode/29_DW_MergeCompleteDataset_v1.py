@@ -131,7 +131,7 @@ del riverDistAll
 del riverDist
 
 CoastLine = pd.read_pickle(single_dataset_location + "06_CoastLine.pkl")
-CoastLine.reset_index(inplace=True)
+#CoastLine.reset_index(inplace=True)
 CoastLine.G04c_001 = CoastLine.G04c_001.astype('int32')
 CoastLine.year = CoastLine.year.astype('int32')
 CoastLine = CoastLine.set_index(['G04c_001', 'year'])
