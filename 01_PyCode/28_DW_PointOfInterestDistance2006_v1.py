@@ -91,7 +91,7 @@ distPOIdisable = pd.DataFrame(distPOIdisable.drop(columns=['geometry', 'index_ri
 distPOIdisable['year'] = 2006 
 distPOIdisable = distPOIdisable.set_index(['G04c_001', 'year'])
 
-distPOI = pd.concat([distPOImuseum, distPOIgovernment, distPOIpolice,
-                     distPOIschool, distPOIpost, distPOIdisable], axis=1)
+distPOI = pd.concat([distPOImuseum, distPOIgovernment, distPOIpolice, distPOIfireStation,
+                     distPOIschool, distPOIhospital, distPOIpost, distPOIdisable], axis=1)
 
 distPOI.to_pickle("F:/17_Article/01_Data/98_20yearPickles/08_distancePoi.pkl")
