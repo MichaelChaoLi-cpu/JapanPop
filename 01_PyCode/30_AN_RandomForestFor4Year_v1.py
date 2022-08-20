@@ -34,7 +34,7 @@ bigX.G04c_001 = bigX.G04c_001.astype("int32")
 bigX.year = bigX.year.astype("int32")
 bigX = bigX.set_index(['G04c_001', 'year'])
 bigX = bigX.fillna(0)
-bigX = bigX.drop(columns='index')
+#bigX = bigX.drop(columns='index')
 
 pointLonLatAll = pd.read_csv(single_dataset_location + "98_pointLonLatALL.csv")
 pointLonLatAll.G04c_001 = pointLonLatAll.G04c_001.astype("int32")
@@ -62,7 +62,7 @@ df_merged.shape
 
 df_merged = df_merged.dropna()
 df_merged.shape
-X = df_merged.iloc[:, 1:55]
+X = df_merged.iloc[:, 1:57]
 X = X.fillna(0)
 y = df_merged.iloc[:, 0:1]
 

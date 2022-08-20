@@ -91,6 +91,10 @@ distPOIdisable = pd.DataFrame(distPOIdisable.drop(columns=['geometry', 'index_ri
 distPOIdisable['year'] = 2006 
 distPOIdisable = distPOIdisable.set_index(['G04c_001', 'year'])
 
+distPOIfireStation = pd.DataFrame(distPOIfireStation.drop(columns=['geometry', 'index_right'])) 
+distPOIfireStation['year'] = 2006 
+distPOIfireStation = distPOIfireStation.set_index(['G04c_001', 'year'])
+
 distPOI = pd.concat([distPOImuseum, distPOIgovernment, distPOIpolice, distPOIfireStation,
                      distPOIschool, distPOIhospital, distPOIpost, distPOIdisable], axis=1)
 

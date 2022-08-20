@@ -21,7 +21,7 @@ import multiprocessing
 single_dataset_location = "DP17/98_20yearPickles/"
 result_location = "DP17/04_Result/"
 
-log_name = "CV82_0812.txt"
+log_name = "CV82_0820.txt"
 
 ### create log file:
 f = open(result_location + log_name, "w")
@@ -45,7 +45,7 @@ def df_mergedPrepare(aimGroup):
     pointLonLatAll.year = pointLonLatAll.year.astype("int32")
     pointLonLatAll = pointLonLatAll.set_index(['G04c_001', 'year'])
     bigX = pd.concat([bigX, pointLonLatAll], axis=1)
-    bigX = bigX.drop(columns='index')
+    #bigX = bigX.drop(columns='index')
     bigX = bigX.query("year == 2005 | year == 2010 | year == 2015 | year == 2020")
     
     ##### y
@@ -83,7 +83,7 @@ def Mdodel82CV(aimGroup, log_name):
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:55]
+    X = df_merged.iloc[:, 1:57]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
     
@@ -167,7 +167,7 @@ def TemporalCV(aimGroup, log_name):
     
     df_merged = df_merged.dropna()
     df_merged.shape
-    X = df_merged.iloc[:, 1:55]
+    X = df_merged.iloc[:, 1:57]
     X = X.fillna(0)
     y = df_merged.iloc[:, 0:1]
     y_raw = y.copy()
