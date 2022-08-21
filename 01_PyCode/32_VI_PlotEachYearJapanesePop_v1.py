@@ -165,7 +165,7 @@ def plotPopMaleLog(year, japan_perfecture, meshGDF, cmap):
 Parallel(n_jobs=7)(delayed(plotPopMaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 ### female
-female_pop_predict = pd.read_csv(result_folder + "SKlearn_1000tree_FemalePopLog_pop_log.csv")
+female_pop_predict = pd.read_csv(result_folder + "SKlearn_1000tree_female_pop_log.csv")
 female_pop_predict.head()
 female_pop_predict["G04c_001"] = female_pop_predict["G04c_001"].astype("int64")
 female_pop_predict['female_pop'] = np.exp(female_pop_predict['bigy_pred']) - 1
