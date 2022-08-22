@@ -198,7 +198,7 @@ def plotPopFemale(year, japan_perfecture, meshGDF, cmap):
 
     fig.savefig(figure_location + "y"+ year +"_female.jpg")
     
-Parallel(n_jobs=7)(delayed(plotPopFemale)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+Parallel(n_jobs=5)(delayed(plotPopFemale)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 female_pop_predict_log_wider = female_pop_predict.drop(columns="female_pop").copy()
 female_pop_predict_log_wider = female_pop_predict_log_wider.pivot(index='G04c_001', 
@@ -226,7 +226,7 @@ def plotPopFemaleLog(year, japan_perfecture, meshGDF, cmap):
 
     fig.savefig(figure_location + "y"+ year +"_female_log.jpg")
     
-Parallel(n_jobs=7)(delayed(plotPopFemaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
+Parallel(n_jobs=5)(delayed(plotPopFemaleLog)(year, japan_perfecture, meshGDF, cmap) for year in np.linspace(2001, 2020, 20))
 
 meshGDF = meshGDF.rename(columns={'G04c_001':"meshID"})
 meshGDF.to_file(result_folder + "GDF_2001_2020_500mesh_total_male_female.v1.shp")
