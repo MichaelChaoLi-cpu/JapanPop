@@ -104,7 +104,7 @@ def drawTotalPop(result_location, figure_location, realPopDf_Y):
     axs[0,1].set_ylim([0, 11000])
     
     #### total pop 
-    total_pop_result_cv = pd.read_csv(result_location + "SKlearn_1000tree_total_DF_cv_3_7.csv")
+    total_pop_result_cv = pd.read_csv(result_location + "SKlearn_1000tree_TotalPopLog_DF_cv_3_7.csv")
     total_pop_result_cv.G04c_001 = total_pop_result_cv.G04c_001.astype('int32')
     total_pop_result_cv.year = total_pop_result_cv.year.astype('int32')
     total_pop_result_cv = total_pop_result_cv.set_index(['G04c_001', 'year'])
