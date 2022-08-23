@@ -188,7 +188,7 @@ def drawTotalPop(result_location, figure_location, realPopDf_Y):
     fig.savefig(figure_location + "fittingModel_total.jpg")
 
 def drawMalePop(result_location, figure_location, realPopDf_Y):
-    total_pop_result = pd.read_csv(result_location + "SKlearn_1000tree_MalePopLog_pop_log.csv")
+    total_pop_result = pd.read_csv(result_location + "SKlearn_1000tree_male_pop_log.csv")
     total_pop_result.G04c_001 = total_pop_result.G04c_001.astype('int32')
     total_pop_result.year = total_pop_result.year.astype('int32')
     total_pop_result = total_pop_result.set_index(['G04c_001', 'year'])
@@ -355,7 +355,7 @@ def drawMalePop(result_location, figure_location, realPopDf_Y):
     fig.savefig(figure_location + "fittingModel_male.jpg")
 
 def drawFemalePop(result_location, figure_location, realPopDf_Y):
-    total_pop_result = pd.read_csv(result_location + "SKlearn_1000tree_FemalePopLog_pop_log.csv")
+    total_pop_result = pd.read_csv(result_location + "SKlearn_1000tree_female_pop_log.csv")
     total_pop_result.G04c_001 = total_pop_result.G04c_001.astype('int32')
     total_pop_result.year = total_pop_result.year.astype('int32')
     total_pop_result = total_pop_result.set_index(['G04c_001', 'year'])
