@@ -17,3 +17,7 @@ y = dd.read_csv(data_location + "02_ytokyo.csv")
 #y = y.drop(['G04c_001', 'year'], axis = 1)
 
 from tensorflow import keras
+
+model = keras.models.Sequential([
+    
+    ])
