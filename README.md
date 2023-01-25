@@ -2,7 +2,7 @@
 This repo is the project to estimate the population distribution in Japan from 2001 to 2020. (DP17)
 
 ## Title
-Gridded datasets for Japanese total, male, and female population over 2001-2020  
+Gridded Datasets for Japanese Total, Male, and Female Population from 2001-2020  
   
 ## Author  
 Chao Li, Shunsuke Managi  
@@ -18,13 +18,13 @@ Chao Li, Shunsuke Managi
 ![](05_Figure/zzz_female_log.gif)
   
 ### Total Population Distribution (2001 - 2020):
-![](05_Figure/merged_total_log.jpg)
+![](05_Figure/Figure2.jpg)
    
 ### Male Population Distribution (2001 - 2020):
-![](05_Figure/merged_male_log.jpg)
+![](05_Figure/Figure3.jpg)
    
 ### Female Population Distribution (2001 - 2020):
-![](05_Figure/merged_female_log.jpg)
+![](05_Figure/Figure4.jpg)
    
 ## Manuscript
 [Gridded datasets for Japanese total, male, and female population over 2001-2020](07_Manuscript/DP17_manu.pdf)  

@@ -230,3 +230,25 @@ Parallel(n_jobs=5)(delayed(plotPopFemaleLog)(year, japan_perfecture, meshGDF, cm
 
 meshGDF = meshGDF.rename(columns={'G04c_001':"meshID"})
 meshGDF.to_file(result_folder + "GDF_2001_2020_500mesh_total_male_female.v1.shp")
+
+
+# For Prof Managi
+"""
+def plotPopLog(year, japan_perfecture, meshGDF, cmap):
+    year = str(int(year))
+    fig = plt.figure(figsize=(8, 8), dpi=1000)
+    ax = plt.axes()
+    japan_perfecture2.boundary.plot(ax=ax, edgecolor='red', alpha = 0.5, 
+                                    linewidth=2, linestyle = '--')
+    japan_perfecture.boundary.plot(ax=ax, edgecolor='black', alpha = 0.5, linewidth=0.6)
+    meshGDF.plot(column='X' + year + "_log", ax=ax, legend=True, cmap=cmap, vmax = 9.5, vmin = 0)
+    plt.title("Japan Population Distribution (Logarithm) in "+ year, loc = "left")
+    plt.grid(True)
+    plt.xlim(130, 131)
+    plt.ylim(33,34)
+    plt.show();
+
+    fig.savefig(figure_location + "y"+ year +"_log_ForPSM.jpg")
+    
+plotPopLog(2019, japan_perfecture, meshGDF, cmap)
+"""
